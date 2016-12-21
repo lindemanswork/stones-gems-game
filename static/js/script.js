@@ -17,3 +17,27 @@ function login(username) {
     });
 
 }
+
+function generateGameSettingsJson(numGames) {
+    var data = {};
+    for (var i = 0; i < numGames; i++) {
+        var numStones = $("#stones" + i).val();
+        var numGems = $("#gems" + i).val();
+        var startCondition = $("#startingpt" + i).val();
+        var unitCond = $("#units" + i).val();
+        data["game_" + i] = { "Stones": numStones, "Gems": numGems, "startCondition": startCondition, "unitCondition": unitCond };
+    }
+    return data;
+}
+
+function setDefault(value, default) {
+    if (value == null || value.length < 1) {
+        value = default;
+    }
+    return value;
+}
+
+function submitSettings() {
+    console.log(generateGameSettingsJson(6));
+
+}

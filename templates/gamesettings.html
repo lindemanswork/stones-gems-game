@@ -1,0 +1,52 @@
+{% extends "layout.html" %} {% block body %}
+<h1>Game Settings</h1>
+<!--create 6 games-->
+<ul class="collapsible" data-collapsible="accordion">
+    {% for n in range(6) %}
+    <li>
+        <div class="collapsible-header">Game {{ n }}</div>
+        <div class="collapsible-body">
+            <div class="row">
+                <div class="input-field col s3">
+                    <input placeholder="Number of Stones" id="stones{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="stones{{ n }}">Number of Stones</label>
+                </div>
+                <div class="input-field col s3">
+                    <input placeholder="Number of Gems" id="gems{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="gems{{ n }}">Number of Gems</label>
+                </div>
+            </div>
+            <div class="row budgetConditions{{ n }}">
+                <h5>Budget Conditions</h5>
+                <div class="input-field col s4">
+                    <select id="startingpt{{ n }}">
+                        <option value="" disabled selected>Starting Point</option>
+                        <option value="1">Add conditions</option>
+                        <option value="2">Transfer conditions</option>
+                        <option value="3">Cut conditions</option>
+                    </select>
+                    <label>Budget Conditions Starting Point</label>
+                </div>
+                <div class="input-field col s4">
+                    <select id="units{{ n }}">
+                        <option value="" disabled selected>Units</option>
+                        <option value="1">Total conditions</option>
+                        <option value="2">Marginal condition</option>
+                    </select>
+                    <label>Budget Conditions Units</label>
+                </div>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
+<a class="waves-effect waves-light btn" onclick = "submitSettings();">Submit</a>
+
+
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+$('select').material_select();
+$('.collapsible').collapsible();
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 def get_db():
-    client = MongoClient('mongodb://heroku_x81wv2hv:upjcjpnd69qsb462cims6rc5qr@ds133388.mlab.com:33388/heroku_x81wv2hv')
-    db = client.heroku_x81wv2hv
+    client = MongoClient('mongodb://heroku_hgj2dkpq:192ledtpq5qhbs9ghpao0h2v2p@ds141078.mlab.com:41078/heroku_hgj2dkpq')
+    db = client.heroku_hgj2dkpq
     return db
 

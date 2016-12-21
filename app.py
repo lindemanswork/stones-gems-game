@@ -29,11 +29,10 @@ sys.setdefaultencoding('utf-8')
 def home():
 	return render_template('index.html')
 
+@app.route("/settings")
+def settings():
+	return render_template('gamesettings.html')
 
-
-
-
-	#return render_template('index3.html', games = mygames)
 
 
 
