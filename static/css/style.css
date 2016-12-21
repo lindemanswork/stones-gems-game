@@ -1,0 +1,12 @@
+.panel {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.panel.green {
+    margin-bottom: 400px
+}
+
+#animate2 {
+	transition: background-color 1s;
+}
