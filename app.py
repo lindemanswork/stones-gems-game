@@ -34,6 +34,19 @@ def settings():
 	return render_template('gamesettings.html')
 
 
+@app.route("/logSettings", methods = ["POST"])
+def logSettings():
+	print "----------------log settings--------------"
+	global db
+	print request.get_json() 
+	db.gamesettings.update({'_id':"585aaffb697d587528d98450"}, request.get_json(), upsert=True)
+
+	'''
+	db.gamesettings.insert(
+		request.get_json()
+		)
+		'''
+	return "Logged game settings"
 
 
 if __name__ == "__main__":
