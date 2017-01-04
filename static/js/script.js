@@ -35,16 +35,20 @@ function generateGameSettingsJson(numGames) {
 
 function submitSettings() {
     var data = generateGameSettingsJson(6);
-    console.log(data);
+    console.log("submitted settings")
     $.ajax({
         type: 'POST',
         url: '/logSettings',
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
+        dataType: 'text',
         success: function(msg, status, jqXHR) {
             console.log("Success submitSettings");
+            alert("Submitted settings");
 
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
         }
     });
 
