@@ -58,8 +58,8 @@ function submitSettings() {
 
 }
 
-
-function getSettings() {
+var data = {};
+function getSettings(gameVersion, callback) {
     $.ajax({
         type: 'GET',
         url: '/getSettings',
@@ -68,12 +68,28 @@ function getSettings() {
         success: function(response) {
             console.log("Got settings");
             var newdata = eval("(" + response["result"] + ")");
-            console.log(newdata);
+            //console.log(newdata["data"]["game_"+gameVersion]);
+            data = newdata["data"]["game_"+gameVersion];
+            callback();
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert(textStatus, errorThrown);
         }
+    });
+
+}
+
+function logInitialData(){
+    var data = {};
+    var url = window.location;
+}
+
+
+function initGame(gameVersion){
+    console.log("game version: "+gameVersion)
+    getSettings(gameVersion, function(){
+        console.log(data);
     });
 
 }

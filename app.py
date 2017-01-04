@@ -27,7 +27,14 @@ sys.setdefaultencoding('utf-8')
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('index.html')
+	return "Home"#render_template('index.html')
+
+@app.route('/game/<num>')
+def game(num):
+	if int(num)<0 or int(num)>5:
+		return "Invalid game page"
+	else:
+		return render_template('index.html',number = num)
 
 @app.route("/settings")
 def settings():
