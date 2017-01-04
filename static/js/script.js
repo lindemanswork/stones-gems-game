@@ -53,3 +53,25 @@ function submitSettings() {
     });
 
 }
+
+
+function getSettings() {
+    $.ajax({
+        type: 'GET',
+        url: '/getSettings',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(response) {
+            console.log("Got settings");
+            var newdata = eval("(" + response["result"] + ")");
+            console.log(newdata);
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
+
+}
+
+//getSettings();

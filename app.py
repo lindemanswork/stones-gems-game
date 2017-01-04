@@ -40,14 +40,15 @@ def logSettings():
 	global db
 	print request.get_json() 
 	db.gamesettings.update({'_id':"585aaffb697d587528d98450"}, request.get_json(), upsert=True)
-
-	'''
-	db.gamesettings.insert(
-		request.get_json()
-		)
-		'''
 	return "Logged game settings"
 
+@app.route("/getSettings",methods = ["GET"])
+def getSettings():
+	data = db.gamesettings.find({'_id':"585aaffb697d587528d98450"})
+	gamedata = [JSONEncoder().encode(game) for game in data]
+	print "gamedata:"
+	print gamedata
+	return jsonify(result = gamedata)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
