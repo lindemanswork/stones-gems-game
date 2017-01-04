@@ -26,7 +26,11 @@ function generateGameSettingsJson(numGames) {
         var numGems = $("#gems" + i).val();
         var startCondition = $("#startingpt" + i).val();
         var unitCond = $("#units" + i).val();
-        data["data"]["game_" + i] = { "Stones": numStones, "Gems": numGems, "startCondition": startCondition, "unitCondition": unitCond };
+        console.log($('#switch' + i).prop('checked'))
+        if ($('#switch' + i).prop('checked')) {
+            console.log("switch"+i+" checked");
+            data["data"]["game_" + i] = { "Stones": numStones, "Gems": numGems, "startCondition": startCondition, "unitCondition": unitCond };
+        }
     }
     return data;
 }
