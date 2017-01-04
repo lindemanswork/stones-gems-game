@@ -26,10 +26,12 @@ function generateGameSettingsJson(numGames) {
         var numMetals = $("#gems" + i).val();
         var startCondition = $("#startingpt" + i).val();
         var unitCond = $("#units" + i).val();
+        var metalsBudget = $("#metalsBudget"+i).val();
+        var stonesBudget = $("#stonesBudget"+i).val();
         console.log($('#switch' + i).prop('checked'))
         if ($('#switch' + i).prop('checked')) {
             console.log("switch" + i + " checked");
-            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "startCondition": startCondition, "unitCondition": unitCond };
+            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget":metalsBudget,"stonesBudget":stonesBudget, "startCondition": startCondition, "unitCondition": unitCond };
         }
     }
     return data;

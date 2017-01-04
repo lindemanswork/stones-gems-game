@@ -28,7 +28,7 @@ function createBudgetArea(startCondition, unitCondition) {
         //createBudgetInput(unitCondition, budgetToAllocate, 0, 0)
     } else if (startCondition == startingpt["transfer"]) {
     	console.log("transfer condition");
-        createBudgetInput(unitCondition, 0, 10, 9);
+        createBudgetInput(unitCondition, 0, data["stonesBudget"],data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
         console.log("Cut condition");
     }
