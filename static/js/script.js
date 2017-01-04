@@ -23,13 +23,13 @@ function generateGameSettingsJson(numGames) {
     data["data"] = {};
     for (var i = 0; i < numGames; i++) {
         var numStones = $("#stones" + i).val();
-        var numGems = $("#gems" + i).val();
+        var numMetals = $("#gems" + i).val();
         var startCondition = $("#startingpt" + i).val();
         var unitCond = $("#units" + i).val();
         console.log($('#switch' + i).prop('checked'))
         if ($('#switch' + i).prop('checked')) {
-            console.log("switch"+i+" checked");
-            data["data"]["game_" + i] = { "Stones": numStones, "Gems": numGems, "startCondition": startCondition, "unitCondition": unitCond };
+            console.log("switch" + i + " checked");
+            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "startCondition": startCondition, "unitCondition": unitCond };
         }
     }
     return data;
@@ -59,6 +59,7 @@ function submitSettings() {
 }
 
 var data = {};
+
 function getSettings(gameVersion, callback) {
     $.ajax({
         type: 'GET',
@@ -69,7 +70,7 @@ function getSettings(gameVersion, callback) {
             console.log("Got settings");
             var newdata = eval("(" + response["result"] + ")");
             //console.log(newdata["data"]["game_"+gameVersion]);
-            data = newdata["data"]["game_"+gameVersion];
+            data = newdata["data"]["game_" + gameVersion];
             callback();
 
         },
@@ -80,18 +81,42 @@ function getSettings(gameVersion, callback) {
 
 }
 
-function logInitialData(){
-    var data = {};
+var userData = {};
+
+function logInitialData() {
     var url = window.location;
+    userData["url"] = url;
+    userData["time"] = timestamp();
 }
 
 
-function initGame(gameVersion){
-    console.log("game version: "+gameVersion)
-    getSettings(gameVersion, function(){
+function initGame(gameVersion) {
+    console.log("game version: " + gameVersion)
+    getSettings(gameVersion, function() {
         console.log(data);
+        generateMetalsStones(parseInt(data["Metals"]), parseInt(data["Stones"]));
+        createBudgetArea(data["startCondition"], data["unitCondition"]);
     });
 
 }
 
-//getSettings();
+function timestamp() {
+    var d = new Date();
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var days = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+    var day = days[d.getDay()];
+    var hr = d.getHours();
+    var min = d.getMinutes();
+    if (min < 10) {
+        min = "0" + min;
+    }
+    var ampm = hr < 12 ? "am" : "pm";
+    var date = d.getDate();
+    var month = months[d.getMonth()];
+    var year = d.getFullYear();
+    var seconds = d.getSeconds();
+
+    var timestamp = day + " " + hr + ":" + min + ":" + seconds + ampm + " " + date + " " + month + " " + year;
+
+    return timestamp;
+}

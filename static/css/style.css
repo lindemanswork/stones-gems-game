@@ -1,8 +1,14 @@
 html {
     background-color: #535ba0;
 }
-.main{
+
+html,
+body {
+    height: 100%;
+    margin: 0
 }
+
+.main {}
 
 #gameScreen {
     margin-left: 10%;
@@ -10,7 +16,6 @@ html {
     background-color: white !important;
     height: 100%;
 }
-
 
 .panel {
     height: 100% !important;
@@ -23,4 +28,8 @@ html {
 
 #animate2 {
     transition: background-color 1s;
+}
+
+.select-dropdown, .dropdown-content span{
+	text-align: center;
 }
