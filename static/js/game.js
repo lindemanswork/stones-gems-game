@@ -6,13 +6,11 @@ var units = { "total": "1", "marginal": "2" }
 var budgetToAllocate = 20;
 var stoneBudget = 10;
 var metalBudget = 9;
-/**
- * [generateMetalsStones description]
- * @param  {integer} numMetals   [description]
- * @param  {integer} numStones [description]
- * @return {[type]}           [description]
- */
-function generateMetalsStones(numMetals, numStones) {
+
+var lightOrange = "#ffc571";
+var orange = "#f99755";
+
+function generateMetalsStones(numMetals, numStones){
 
 }
 
@@ -35,12 +33,23 @@ function createBudgetArea(startCondition, unitCondition) {
 
 }
 
+function createCoins(divID, numCoins){
+	for (var i=0; i<numCoins; i++){
+		$("#"+divID).html("<div class='coin'></div>"+$("#"+divID).html());
+		if ((i+1)%5==0 && i!=0){
+			$("#"+divID).html("<br>"+$("#"+divID).html());
+		}
+	}
+}
+
 function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, metalBudget = 10) {
     if (unitCondition == units["total"]) {
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
     } else if (unitCondition == units["marginal"]) {
-
+    	console.log("Marginal conditions!!!")
+    	createCoins("stonesBudget", stoneBudget);
+    	createCoins("metalsBudget",metalBudget);
     }
 
 }
@@ -63,6 +72,8 @@ function createDropDownOptions(numOptions) {
     console.log(result)
     return result;
 }
+
+
 userData["stonesBudget"]=[];
 userData["metalsBudget"]=[];
 function payMoney(){
