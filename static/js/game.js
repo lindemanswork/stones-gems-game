@@ -47,7 +47,7 @@ function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, 
 
 function createDropDown(divID, name, numOptions = 10) {
     $("#" + divID).append('<div class="input-field col s4 offset-s4 budgetDropdown">' +
-        '<select>' +
+        '<select id = "'+divID+'dropDown">' +
         createDropDownOptions(numOptions) +
         '</select>' +
         '<label></label>' +
@@ -62,4 +62,14 @@ function createDropDownOptions(numOptions) {
     }
     console.log(result)
     return result;
+}
+userData["stonesBudget"]=[];
+userData["metalsBudget"]=[];
+function payMoney(){
+	var stonesBudget = $("#stonesBudgetdropDown").val();
+	var metalsBudget = $("#metalsBudgetdropDown").val();
+	userData["stonesBudget"]= [{"budget":stonesBudget, "time":timestamp()}];
+	userData["metalsBudget"]=[{"budget":metalsBudget, "time":timestamp()}];
+	console.log("User data: ");
+	console.log(userData);
 }

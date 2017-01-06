@@ -86,7 +86,7 @@ function getSettings(gameVersion, callback) {
 var userData = {};
 
 function logInitialData() {
-    var url = window.location;
+    var url = window.location.href;
     userData["url"] = url;
     userData["time"] = timestamp();
 }
@@ -94,6 +94,7 @@ function logInitialData() {
 
 function initGame(gameVersion) {
     console.log("game version: " + gameVersion)
+    logInitialData();
     getSettings(gameVersion, function() {
         console.log(data);
         generateMetalsStones(parseInt(data["Metals"]), parseInt(data["Stones"]));

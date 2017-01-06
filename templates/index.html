@@ -10,12 +10,18 @@
             <div class="budget" id="stonesBudget">
                 <h3>Stones Budget</h3></div>
         </div>
-        <div class="col s4"><h3>Not yet allocated</h3></div>
+        <div class="col s4">
+            <h3>Not yet allocated</h3>
+            <div class="row budgetButton">
+            	<a class="btn" id="payMoney" onclick="payMoney()">Finalize my budget</a>
+            </div>
+        </div>
         <div class="col s4">
             <div class="budget" id="metalsBudget">
                 <h3>Metals Budget</h3></div>
         </div>
     </div>
+    <div class="row"></div>
 </div>
 {% endblock %} {% block scripts %}
 <script src="/static/js/game.js"></script>
