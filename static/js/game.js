@@ -72,4 +72,5 @@ function payMoney(){
 	userData["metalsBudget"]=[{"budget":metalsBudget, "time":timestamp()}];
 	console.log("User data: ");
 	console.log(userData);
+	logUserData(userData);
 }

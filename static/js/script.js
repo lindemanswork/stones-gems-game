@@ -60,6 +60,24 @@ function submitSettings() {
 
 }
 
+function logUserData(userDat){
+    $.ajax({
+        type: 'POST',
+        url: '/logUserData',
+        data: JSON.stringify(userDat),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'text',
+        success: function(msg, status, jqXHR) {
+            console.log("Success submitSettings");
+            alert("Submitted settings");
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus, errorThrown);
+        }
+    });
+}
+
 var data = {};
 
 function getSettings(gameVersion, callback) {

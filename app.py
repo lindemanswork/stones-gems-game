@@ -57,6 +57,11 @@ def getSettings():
 	print gamedata
 	return jsonify(result = gamedata)
 
+@app.route("/logUserData",methods = ["POST"])
+def logData():
+	db.userdata.insert(request.get_json())
+	return "Logged data"
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
