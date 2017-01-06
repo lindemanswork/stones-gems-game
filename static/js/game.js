@@ -1,4 +1,7 @@
 var startingpt = { "add": "1", "transfer": "2", "cut": "3" };
+//add: nothing in either budgets all in "to be allocated"
+//transfer: spread over 2 budges
+//Cut: cut from two budgets
 
 //total: directly input in textbox
 //marginal: one by one with the arrows
@@ -23,7 +26,7 @@ function generateMetalsStones(numMetals, numStones){
 function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) {
     	console.log("Add condition")
-        //createBudgetInput(unitCondition, budgetToAllocate, 0, 0)
+        createBudgetInput(unitCondition, parseInt(data["stonesBudget"])+parseInt(data["metalsBudget"]), 0, 0);
     } else if (startCondition == startingpt["transfer"]) {
     	console.log("transfer condition");
         createBudgetInput(unitCondition, 0, data["stonesBudget"],data["metalsBudget"]);
@@ -43,6 +46,10 @@ function createCoins(divID, numCoins){
 }
 
 function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, metalBudget = 10) {
+	console.log("total budget: "+totalPotBudget)
+	$("#stonesBudgetNum").html(stoneBudget);
+	$("#metalsBudgetNum").html(metalBudget);
+	$("#unallocatedBudgetNum").html(totalPotBudget);
     if (unitCondition == units["total"]) {
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
@@ -50,6 +57,7 @@ function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, 
     	console.log("Marginal conditions!!!")
     	createCoins("stonesBudget", stoneBudget);
     	createCoins("metalsBudget",metalBudget);
+    	createCoins("unallocatedBudget",totalPotBudget);
     }
 
 }
