@@ -12,9 +12,18 @@ var metalBudget = 9;
 
 var lightOrange = "#ffc571";
 var orange = "#f99755";
+var purple = "#858ce9";
 
-function generateMetalsStones(numMetals, numStones){
+function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones){
+	generateObjects(metalDivID, numMetals,/*metal image path*/);
+	generateObjects(stoneDivID, numStones, /*stone image path*/);
 
+}
+
+function generateObjects(divID, numObject, toAppend){
+	for (var i=0; i<numObject; i++){
+		$("#"+divID).append(toAppend);
+	}
 }
 
 /**
