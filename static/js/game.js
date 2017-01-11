@@ -34,6 +34,8 @@ var stoneBudget = 10;
 var metalBudget = 9;
 var totalPotBudget = budgetToAllocate;
 var level = 1;
+var metalPrices = [];
+var stonePrices = [];
 
 /*-----new level---------*/
 function newLevel() {
@@ -87,6 +89,12 @@ function setInitialValues() {
     metalBudget = parseInt(data["metalsBudget"])
     console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
     totalPotBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
+    initPrices();
+}
+
+function initPrices() {
+    metalPrices = shuffleArray(data["metalPrices"].split(","));
+    stonePrices = shuffleArray(data["stonePrices"].split(","));
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
@@ -128,13 +136,13 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
  */
 function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
     $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='" +
-        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + " </div>");
+        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" +"<div class='price' id='"+stoneOrMetal+"Price"+i+"'> $"+ window[stoneOrMetal+"Prices"].pop()+" </div>");
     $("#" + stoneOrMetal + i).css("background-color", color);
     setObjectClickAction("#" + stoneOrMetal + i);
 }
 
 function setObjectClickAction(divID) {
-	console.log("Set object click action div: "+divID)
+    console.log("Set object click action div: " + divID)
     $(divID).click(function() {
         console.log("Click object!")
         if ($(this).attr("objectType") == "metal") {
