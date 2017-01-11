@@ -85,6 +85,7 @@ function setObjectClickAction(divID) {
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
         }
+        updateBudgetNumUI();
         console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
     });
 
@@ -97,6 +98,12 @@ function decrementBudget(budgetName, divID) {
         $(divID).css("background-color", "grey");
         window[budgetName]--;
     }
+}
+
+function updateBudgetNumUI() {
+    $("#stonesBudgetNum").html(stoneBudget);
+    $("#metalsBudgetNum").html(metalBudget);
+    $("#unallocatedBudgetNum").html(totalPotBudget);
 }
 
 function generateIndices() {
@@ -165,9 +172,7 @@ function createCoins(divID, numCoins) {
 
 function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, metalBudget = 10) {
     console.log("total budget: " + totalPotBudget)
-    $("#stonesBudgetNum").html(stoneBudget);
-    $("#metalsBudgetNum").html(metalBudget);
-    $("#unallocatedBudgetNum").html(totalPotBudget);
+    updateBudgetNumUI();
     if (unitCondition == units["total"]) {
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
