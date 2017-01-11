@@ -45,8 +45,16 @@ def settings():
 def logSettings():
 	print "----------------log settings--------------"
 	global db
-	print request.get_json() 
-	db.gamesettings.update({'_id':"585aaffb697d587528d98450"}, request.get_json(), upsert=True)
+	json = request.get_json() 
+	print json
+	for key in json:
+		print key
+		if json[key]=="None":
+			print "do nothing"
+		else:
+			db.gamesettings.update({'_id':"585aaffb697d587528d98450"}, {'$set': {key: json[key]}}, upsert=True)
+	#db.collection.update(query, {$set: {'stats.daily.20120622.mainpage.visited': 1}});
+	#db.gamesettings.update({'_id':"585aaffb697d587528d98450"}, request.get_json(), upsert=True)
 	return "Logged game settings"
 
 @app.route("/getSettings",methods = ["GET"])

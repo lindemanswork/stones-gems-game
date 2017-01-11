@@ -20,7 +20,7 @@ function login(username) {
 
 function generateGameSettingsJson(numGames) {
     var data = {};
-    data["data"] = {};
+    //data["data"] = {};
     for (var i = 0; i < numGames; i++) {
         var numStones = $("#stones" + i).val();
         var numMetals = $("#gems" + i).val();
@@ -28,12 +28,15 @@ function generateGameSettingsJson(numGames) {
         var unitCond = $("#units" + i).val();
         var metalsBudget = $("#metalsBudget" + i).val();
         var stonesBudget = $("#stonesBudget" + i).val();
+        var metalPrices = $("#metalPrices" + i).val();
+        var stonePrices = $("#stonePrices" + i).val();
         console.log($('#switch' + i).prop('checked'))
         if ($('#switch' + i).prop('checked')) {
             console.log("switch" + i + " checked");
-            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond };
-        }else{
-            alert("Game "+ i +" was not checked to be created.")
+            data/*["data"]*/["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond, "stonePrices": stonePrices, "metalPrices": metalPrices };
+        } else {
+            data/*["data"]*/["game_" + i] = "None";
+            alert("Game " + i + " was not checked to be created.")
         }
     }
     return data;

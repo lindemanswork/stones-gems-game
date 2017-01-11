@@ -40,14 +40,18 @@ function newLevel() {
     console.log("NEW LEVEL!")
     level++;
     clearScreen();
+    initUIVariables();
+    generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
+    createBudgetArea(data["startCondition"], data["unitCondition"]);
+}
+
+function initUIVariables() {
     metalCombinations = generateCombinations();
     stoneCombinations = generateCombinations();
     nums1 = shuffleArray(nums.slice());
     nums2 = shuffleArray(nums.slice());
     metalPairings = [];
     stonePairings = [];
-    generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
-    createBudgetArea(data["startCondition"], data["unitCondition"]);
 }
 
 function clearScreen() {
@@ -180,7 +184,7 @@ function generateCombinations() {
 }
 
 
-function randomizePrices(multiplier){
+function randomizePrices(multiplier) {
 
 }
 
