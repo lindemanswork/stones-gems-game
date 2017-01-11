@@ -13,11 +13,18 @@ var stoneCombinations = generateCombinations();
 console.log(metalCombinations)
 console.log(stoneCombinations)
 
+var lightOrange = "#ffc571";
+var orange = "#f99755";
+var purple = "#858ce9";
+
+
 var stoneImages = [];
 var metalImages = [];
-var colors = [];
+var colors = [orange, purple, lightOrange, "#800000", "#FF0000"]; //TODO: replace with actual colors
 var stonePairings = [];
 var metalPairings = [];
+
+//TODO: change to what user inputs
 var budgetToAllocate = 20;
 var stoneBudget = 10;
 var metalBudget = 9;
@@ -26,9 +33,6 @@ var nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
 var nums1 = shuffleArray(nums);
 var nums2 = shuffleArray(nums);
 
-var lightOrange = "#ffc571";
-var orange = "#f99755";
-var purple = "#858ce9";
 
 
 function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
@@ -55,18 +59,44 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         var metalColor = colors[metalIndices[1]];
         var stoneColor = colors[stoneIndices[1]];
 
-        $("#" + metalDivID).append("<div class='metal object' id='metal" + i + "'>" + "<img class = 'objectImage' src='/static/images/metals/" + metal + "'>" + " </div>");
+        $("#" + metalDivID).append("<div objectType='metal' class='metal object' id='metal" + i + "'>" + "<img class = 'objectImage' src='/static/images/metals/" + metal + "'>" + " </div>");
         $("#metal" + i).css("background-color", metalColor);
-        $("#" + stoneDivID).append("<div class='stone object' id='stone" + i + "'>" + "<img class = 'objectImage' src='/static/images/stones/" + stone + "'>" + " </div>");
+        setObjectClickAction("#metal" + i)
+        $("#" + stoneDivID).append("<div objectType='stone' class='stone object' id='stone" + i + "'>" + "<img class = 'objectImage' src='/static/images/stones/" + stone + "'>" + " </div>");
         $("#stone" + i).css("background-color", stoneColor);
+        setObjectClickAction("#stone" + i);
         delete metalCombinations[rand]
         delete stoneCombinations[rand1]
     }
+    /*
     console.log("Pairings: ")
     console.log(metalPairings)
     console.log(stonePairings)
     console.log(metalCombinations)
     console.log(stoneCombinations)
+    */
+}
+
+function setObjectClickAction(divID) {
+    $(divID).click(function() {
+        //error check
+        if ($(this).attr("objectType") == "metal") {
+            decrementBudget("metalBudget", this);
+        } else if ($(this).attr("objectType") == "stone") {
+            decrementBudget("stoneBudget", this);
+        }
+        console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
+    });
+
+}
+
+function decrementBudget(budgetName, divID) {
+    if (window[budgetName] <= 0) {
+        alert("Not enough money to buy more")
+    } else {
+        $(divID).css("background-color", "grey");
+        window[budgetName]--;
+    }
 }
 
 function generateIndices() {
