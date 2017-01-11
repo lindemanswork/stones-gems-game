@@ -17,6 +17,9 @@ var lightOrange = "#ffc571";
 var orange = "#f99755";
 var purple = "#858ce9";
 
+var maxStoneBudget = 10;
+var maxMetalBudget = 10;
+
 //UI stuff
 var stoneImages = [];
 var metalImages = [];
@@ -234,12 +237,27 @@ function shuffleArray(array) {
 function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) {
         console.log("Add condition")
-        createBudgetInput(unitCondition, parseInt(data["stonesBudget"]) + parseInt(data["metalsBudget"]), 0, 0);
-    } else if (startCondition == startingpt["transfer"]) {
+        createBudgetInput(unitCondition, totalPotBudget, 0, 0);
+    } else if (startCondition == startingpt["transfer"]) { //from side to side
         console.log("transfer condition");
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
         console.log("Cut condition");
+        createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
+    }
+
+}
+
+//for add condition
+function allocateBudget(budgetToDiv, budgetFromDiv) {
+	var objectType = $(budgetFromDiv).attr("objectType");
+    if ((objectType == "unallocated") && totalPotBudget > 0) {
+        totalPotBudget--;
+    } else if ((objectType == "stone") && stoneBudget > 0) {
+
+    } else if ((objectType == "metal") && metalBudget > 0)
+    else {
+        alert("You have no more coins to allocate from "+objectType);
     }
 
 }
@@ -268,7 +286,7 @@ function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, 
         console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
         createCoins("metalCoins", metalBudget);
-        createCoins("unallocatedBudget", totalPotBudget);
+        createCoins("unallocatedCoins", totalPotBudget);
     }
 
 }
