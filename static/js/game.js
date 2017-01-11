@@ -25,7 +25,7 @@ var stonePairings = [];
 var metalPairings = [];
 var nums = generateArrayOfNums(25);
 var nums1 = shuffleArray(nums.slice());
-var nums2 = shuffleArray(nums1.slice());
+var nums2 = shuffleArray(nums.slice());
 
 
 //Game variables
@@ -37,23 +37,26 @@ var level = 1;
 
 /*-----new level---------*/
 function newLevel() {
+    console.log("NEW LEVEL!")
     level++;
     clearScreen();
-    console.log("The data: ")
-    console.log(data);
+    metalCombinations = generateCombinations();
+    stoneCombinations = generateCombinations();
+    nums1 = shuffleArray(nums.slice());
+    nums2 = shuffleArray(nums.slice());
+    metalPairings = [];
+    stonePairings = [];
     generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
     createBudgetArea(data["startCondition"], data["unitCondition"]);
-    nums1 = shuffleArray(nums.slice());
-    nums2 = shuffleArray(nums1.slice());
 }
 
-function clearScreen(){
-	$("#metalsVendor").empty();
-	$("#stonesVendor").empty();
-	$("#metalCoins").empty();
-	$("#stoneCoins").empty();
-	$("#metalsBudgetNum").empty();
-	$("#stonesBudgetNum").empty();
+function clearScreen() {
+    $("#metalsVendor").empty();
+    $("#stonesVendor").empty();
+    $("#metalCoins").empty();
+    $("#stoneCoins").empty();
+    $("#metalsBudgetNum").empty();
+    $("#stonesBudgetNum").empty();
 }
 
 /*----------randomize UI-----------*/
@@ -66,9 +69,10 @@ function generateArrayOfNums(num) {
     return arr;
 }
 
+//will there always be an equal amount of stones and metals?
 function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     setInitialValues();
-    console.log("number of stones: "+numStones+", metals: "+numMetals)
+    console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
 
@@ -77,7 +81,7 @@ function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
 function setInitialValues() {
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
-    console.log("BUdget: stone:"+stoneBudget+", "+metalBudget)
+    console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
     totalPotBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
 }
 
@@ -86,13 +90,14 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         var rand = nums1.pop();
         var rand1 = nums2.pop();
 
-        //console.log("rands: " + rand + ", " + rand1)
         metalIndices = metalCombinations[rand];
         stoneIndices = stoneCombinations[rand1];
 
         //add to pairings
         metalPairings.push(metalIndices);
         stonePairings.push(stoneIndices);
+
+        console.log("Indices: metal:" + metalIndices + ", stone: " + stoneIndices);
 
         var stone = stoneImages[stoneIndices[0]];
         var metal = metalImages[metalIndices[0]];
@@ -117,8 +122,8 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
  * @return {null}              
  */
 function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
-    $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='"+
-        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal+ "s/" + imageFile + "'>" + " </div>");
+    $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='" +
+        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + " </div>");
     $("#" + stoneOrMetal + i).css("background-color", color);
 }
 
