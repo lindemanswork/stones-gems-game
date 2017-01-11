@@ -93,8 +93,12 @@ function getSettings(gameVersion, callback) {
         success: function(response) {
             console.log("Got settings");
             var newdata = eval("(" + response["result"] + ")");
+            console.log("old data:")
+            console.log(newdata)
             //console.log(newdata["data"]["game_"+gameVersion]);
-            data = newdata["data"]["game_" + gameVersion];
+            data = newdata["game_" + gameVersion];
+            console.log("Does the data exist? ");
+            console.log(data);
             callback();
 
         },
@@ -110,6 +114,7 @@ var userData = {};
 function logInitialData() {
     var url = window.location.href;
     userData["url"] = url;
+    userData["_id"] = url.split('?')[1];
     userData["time"] = timestamp();
 }
 
