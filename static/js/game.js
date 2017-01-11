@@ -130,11 +130,13 @@ function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
     $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='" +
         stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + " </div>");
     $("#" + stoneOrMetal + i).css("background-color", color);
+    setObjectClickAction("#" + stoneOrMetal + i);
 }
 
 function setObjectClickAction(divID) {
+	console.log("Set object click action div: "+divID)
     $(divID).click(function() {
-        //error check
+        console.log("Click object!")
         if ($(this).attr("objectType") == "metal") {
             decrementBudget("metalBudget", this);
         } else if ($(this).attr("objectType") == "stone") {
