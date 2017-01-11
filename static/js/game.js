@@ -28,6 +28,7 @@ var metalPairings = [];
 var budgetToAllocate = 20;
 var stoneBudget = 10;
 var metalBudget = 9;
+var totalPotBudget = budgetToAllocate;
 
 var nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 var nums1 = shuffleArray(nums);
@@ -59,10 +60,10 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         var metalColor = colors[metalIndices[1]];
         var stoneColor = colors[stoneIndices[1]];
 
-        $("#" + metalDivID).append("<div objectType='metal' class='metal object' id='metal" + i + "'>" + "<img class = 'objectImage' src='/static/images/metals/" + metal + "'>" + " </div>");
+        $("#" + metalDivID).append("<div purchased='false' objectType='metal' class='metal object' id='metal" + i + "'>" + "<img class = 'objectImage' src='/static/images/metals/" + metal + "'>" + " </div>");
         $("#metal" + i).css("background-color", metalColor);
         setObjectClickAction("#metal" + i)
-        $("#" + stoneDivID).append("<div objectType='stone' class='stone object' id='stone" + i + "'>" + "<img class = 'objectImage' src='/static/images/stones/" + stone + "'>" + " </div>");
+        $("#" + stoneDivID).append("<div purchased='false' objectType='stone' class='stone object' id='stone" + i + "'>" + "<img class = 'objectImage' src='/static/images/stones/" + stone + "'>" + " </div>");
         $("#stone" + i).css("background-color", stoneColor);
         setObjectClickAction("#stone" + i);
         delete metalCombinations[rand]
@@ -94,8 +95,11 @@ function setObjectClickAction(divID) {
 function decrementBudget(budgetName, divID) {
     if (window[budgetName] <= 0) {
         alert("Not enough money to buy more")
+    } else if ($(divID).attr("purchased") == "true") {
+        alert("Already purchased");
     } else {
         $(divID).css("background-color", "grey");
+        $(divID).attr("purchased", "true");
         window[budgetName]--;
     }
 }
