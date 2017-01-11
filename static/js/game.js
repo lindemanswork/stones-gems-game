@@ -30,16 +30,29 @@ var stoneBudget = 10;
 var metalBudget = 9;
 var totalPotBudget = budgetToAllocate;
 
-var nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+var nums = generateArrayOfNums(25);
 var nums1 = shuffleArray(nums);
-var nums2 = shuffleArray(nums);
+var nums2 = shuffleArray(nums1.slice());
 
-
+function generateArrayOfNums(num) {
+    var arr = [];
+    for (var i = 0; i < num; i++) {
+        arr.push(i);
+    }
+    return arr;
+}
 
 function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
+	setInitialValues();
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
 
+}
+
+function setInitialValues(){
+	stoneBudget = parseInt(data["stonesBudget"])
+	metalBudget = parseInt(data["metalsBudget"])
+	totalPotBudget = stoneBudget+metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
@@ -101,20 +114,19 @@ function decrementBudget(budgetName, divID) {
         $(divID).css("background-color", "grey");
         $(divID).attr("purchased", "true");
         window[budgetName]--;
+        updateCoins($(divID).attr("objectType")+"Coins",window[budgetName]);
     }
 }
 
 function updateBudgetNumUI() {
     $("#stonesBudgetNum").html(stoneBudget);
     $("#metalsBudgetNum").html(metalBudget);
-    $("#unallocatedBudgetNum").html(totalPotBudget);
+    $("#unallocatedBudgetNum").html(totalPotBudget); //TODO: fix this, can't be the sum
 }
 
 function generateIndices() {
     var colorNum = getRandomArbitrary(0, 5);
     var objectNum = getRandomArbitrary(0, 5);
-    //var stoneNum = getRandomArbitrary(0, 5);
-    //var metalNum = getRandomArbitrary(0, 5);
     return [colorNum, objectNum];
 }
 
@@ -174,6 +186,11 @@ function createCoins(divID, numCoins) {
     }
 }
 
+function updateCoins(divID, numCoins) {
+    $("#" + divID).empty();
+    createCoins(divID, numCoins);
+}
+
 function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, metalBudget = 10) {
     console.log("total budget: " + totalPotBudget)
     updateBudgetNumUI();
@@ -182,8 +199,8 @@ function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, 
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
     } else if (unitCondition == units["marginal"]) {
         console.log("Marginal conditions!!!")
-        createCoins("stonesBudget", stoneBudget);
-        createCoins("metalsBudget", metalBudget);
+        createCoins("stoneCoins", stoneBudget);
+        createCoins("metalCoins", metalBudget);
         createCoins("unallocatedBudget", totalPotBudget);
     }
 
