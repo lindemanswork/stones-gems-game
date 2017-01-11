@@ -26,12 +26,12 @@ function generateGameSettingsJson(numGames) {
         var numMetals = $("#gems" + i).val();
         var startCondition = $("#startingpt" + i).val();
         var unitCond = $("#units" + i).val();
-        var metalsBudget = $("#metalsBudget"+i).val();
-        var stonesBudget = $("#stonesBudget"+i).val();
+        var metalsBudget = $("#metalsBudget" + i).val();
+        var stonesBudget = $("#stonesBudget" + i).val();
         console.log($('#switch' + i).prop('checked'))
         if ($('#switch' + i).prop('checked')) {
             console.log("switch" + i + " checked");
-            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget":metalsBudget,"stonesBudget":stonesBudget, "startCondition": startCondition, "unitCondition": unitCond };
+            data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond };
         }
     }
     return data;
@@ -60,7 +60,7 @@ function submitSettings() {
 
 }
 
-function logUserData(userDat){
+function logUserData(userDat) {
     $.ajax({
         type: 'POST',
         url: '/logUserData',
@@ -68,8 +68,7 @@ function logUserData(userDat){
         contentType: 'application/json; charset=utf-8',
         dataType: 'text',
         success: function(msg, status, jqXHR) {
-            console.log("Success submitSettings");
-            alert("Submitted settings");
+            console.log('Logged user data')
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -115,7 +114,7 @@ function initGame(gameVersion) {
     logInitialData();
     getSettings(gameVersion, function() {
         console.log(data);
-        generateMetalsStones("metalsVendor", "stonesVendor",parseInt(data["Metals"]));
+        generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
         createBudgetArea(data["startCondition"], data["unitCondition"]);
     });
 
