@@ -1,4 +1,10 @@
-{% extends "layout.html" %} {% block body %}
+ {% extends "layout.html" %} {% block style %}
+<style type="text/css">
+html {
+    background-color: white !important;
+}
+</style>
+{% endblock %} {% block body %}
 <h1>Game Settings</h1>
 <!--create 6 games-->
 <ul class="collapsible" data-collapsible="accordion">
@@ -22,6 +28,16 @@
                 <div class="input-field col s3">
                     <input placeholder="Initial Budget for Metals" id="metalsBudget{{ n }}" type="text" class="validate game{{ n }}">
                     <label for="metalsBudget{{ n }}">Metals Budget</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Metal Prices (comma separated string ie. 1,2,3,4,5)" id="metalPrices{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="metalPrices{{ n }}">Metal Prices</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Stone Prices (comma separated string ie. 1,2,3,4,5)" id="stonePrices{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="stonePrices{{ n }}">Stone Prices</label>
                 </div>
             </div>
             <div class="row budgetConditions{{ n }}">
@@ -49,7 +65,7 @@
                     <label>
                         Don't use this game
                         <input id="switch{{ n }}" type="checkbox">
-                        <span class="lever"></span> Edit
+                        <span class="lever"></span> Create
                     </label>
                 </div>
             </div>

@@ -112,6 +112,7 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
 
 }
 
+
 /**
  * [createObjectImage description]
  * @param  {String} stoneOrMetal "stone" or "metal"
@@ -177,6 +178,13 @@ function generateCombinations() {
     }
     return combinations;
 }
+
+
+function randomizePrices(multiplier){
+
+}
+
+
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */

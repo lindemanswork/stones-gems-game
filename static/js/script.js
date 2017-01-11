@@ -32,6 +32,8 @@ function generateGameSettingsJson(numGames) {
         if ($('#switch' + i).prop('checked')) {
             console.log("switch" + i + " checked");
             data["data"]["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond };
+        }else{
+            alert("Game "+ i +" was not checked to be created.")
         }
     }
     return data;
