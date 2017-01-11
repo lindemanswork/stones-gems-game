@@ -22,6 +22,7 @@ function generateGameSettingsJson(numGames) {
     var data = {};
     //data["data"] = {};
     for (var i = 0; i < numGames; i++) {
+        var rounds = $("#rounds"+i).val();
         var numStones = $("#stones" + i).val();
         var numMetals = $("#gems" + i).val();
         var startCondition = $("#startingpt" + i).val();
@@ -30,10 +31,11 @@ function generateGameSettingsJson(numGames) {
         var stonesBudget = $("#stonesBudget" + i).val();
         var metalPrices = $("#metalPrices" + i).val();
         var stonePrices = $("#stonePrices" + i).val();
+        var priceMultipliers = $("#priceMultipliers"+i).val();
         console.log($('#switch' + i).prop('checked'))
         if ($('#switch' + i).prop('checked')) {
             console.log("switch" + i + " checked");
-            data/*["data"]*/["game_" + i] = { "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond, "stonePrices": stonePrices, "metalPrices": metalPrices };
+            data/*["data"]*/["game_" + i] = {"Rounds":rounds, "Stones": numStones, "Metals": numMetals, "metalsBudget": metalsBudget, "stonesBudget": stonesBudget, "startCondition": startCondition, "unitCondition": unitCond, "stonePrices": stonePrices, "metalPrices": metalPrices,"priceMultipliers":priceMultipliers };
         } else {
             data/*["data"]*/["game_" + i] = "None";
             alert("Game " + i + " was not checked to be created.")

@@ -36,9 +36,13 @@ var totalPotBudget = budgetToAllocate;
 var level = 1;
 var metalPrices = [];
 var stonePrices = [];
+var priceMultipliers = [];
+var roundsLeft;
 
 /*-----new level---------*/
 function newLevel() {
+    roundsLeft--;
+    console.log("Rounds left after new level: " + roundsLeft)
     console.log("NEW LEVEL!")
     level++;
     clearScreen();
@@ -85,6 +89,10 @@ function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
 }
 
 function setInitialValues() {
+    if (roundsLeft == null) {
+        roundsLeft = parseInt(data["Rounds"]);
+    }
+    console.log("Rounds left: " + roundsLeft)
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
     console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
@@ -95,6 +103,7 @@ function setInitialValues() {
 function initPrices() {
     metalPrices = shuffleArray(data["metalPrices"].split(","));
     stonePrices = shuffleArray(data["stonePrices"].split(","));
+    priceMultipliers = shuffleArray(data["priceMultipliers"].split(","));
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
@@ -109,7 +118,7 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         metalPairings.push(metalIndices);
         stonePairings.push(stoneIndices);
 
-        console.log("Indices: metal:" + metalIndices + ", stone: " + stoneIndices);
+        //console.log("Indices: metal:" + metalIndices + ", stone: " + stoneIndices);
 
         var stone = stoneImages[stoneIndices[0]];
         var metal = metalImages[metalIndices[0]];
@@ -136,13 +145,13 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
  */
 function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
     $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='" +
-        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" +"<div class='price' id='"+stoneOrMetal+"Price"+i+"'> $"+ window[stoneOrMetal+"Prices"].pop()+" </div>");
+        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + "<div class='price' id='" + stoneOrMetal + "Price" + i + "'> $" + (parseInt(priceMultipliers[roundsLeft - 1]) * parseInt(window[stoneOrMetal + "Prices"].pop())) + " </div>");
     $("#" + stoneOrMetal + i).css("background-color", color);
     setObjectClickAction("#" + stoneOrMetal + i);
 }
 
 function setObjectClickAction(divID) {
-    console.log("Set object click action div: " + divID)
+    //console.log("Set object click action div: " + divID)
     $(divID).click(function() {
         console.log("Click object!")
         if ($(this).attr("objectType") == "metal") {
@@ -295,5 +304,9 @@ function payMoney() {
     console.log("User data: ");
     console.log(userData);
     logUserData(userData);
-    newLevel();
+    if (roundsLeft > 1) {
+        newLevel();
+    } else {
+        alert("Thank you for playing")
+    }
 }

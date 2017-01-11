@@ -13,6 +13,12 @@ html {
         <div class="collapsible-header">Game {{ n }}</div>
         <div class="collapsible-body">
             <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="Number of Rounds" id="rounds{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="rounds{{ n }}">Number of Rounds</label>
+                </div>
+            </div>
+            <div class="row">
                 <div class="input-field col s3">
                     <input placeholder="Number of Stones" id="stones{{ n }}" type="text" class="validate game{{ n }}">
                     <label for="stones{{ n }}">Number of Stones</label>
@@ -32,11 +38,15 @@ html {
             </div>
             <div class="row">
                 <h5>Prices Lists</h5>
-                <div class="input-field col s6">
+                <div class="input-field col s4">
+                    <input placeholder="Price Multipliers (comma separated string ie. 1,2,3,4,5)" id="priceMultipliers{{ n }}" type="text" class="validate game{{ n }}">
+                    <label for="priceMultipliers{{ n }}">Price multipliers (same # elements as # of rounds)</label>
+                </div>
+                <div class="input-field col s4">
                     <input placeholder="Metal Prices (comma separated string ie. 1,2,3,4,5)" id="metalPrices{{ n }}" type="text" class="validate game{{ n }}">
                     <label for="metalPrices{{ n }}">Metal Prices</label>
                 </div>
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     <input placeholder="Stone Prices (comma separated string ie. 1,2,3,4,5)" id="stonePrices{{ n }}" type="text" class="validate game{{ n }}">
                     <label for="stonePrices{{ n }}">Stone Prices</label>
                 </div>
