@@ -115,7 +115,7 @@ function initGame(gameVersion) {
     logInitialData();
     getSettings(gameVersion, function() {
         console.log(data);
-        generateMetalsStones(parseInt(data["Metals"]), parseInt(data["Stones"]));
+        generateMetalsStones("metalsVendor", "stonesVendor",parseInt(data["Metals"]), parseInt(data["Stones"]));
         createBudgetArea(data["startCondition"], data["unitCondition"]);
     });
 

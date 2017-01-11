@@ -2,8 +2,12 @@
 <div id="gameScreen">
     <div class="row">Instructions</div>
     <div class="row">
-        <div class="col s6">Vendor 1</div>
-        <div class="col s6">Vendor 2</div>
+        <div class="col s6">Vendor 1
+            <div id="stonesVendor"></div>
+        </div>
+        <div class="col s6">Vendor 2
+            <div id="metalsVendor"></div>
+        </div>
     </div>
     <hr>
     <div class="row">
@@ -12,11 +16,11 @@
                 <h3>Stones Budget: <span id = "stonesBudgetNum"></span></h3></div>
         </div>
         <div class="col s4">
-        	<div class="budget" id="unallocatedBudget">
-            	<h3>Not yet allocated: <span id = "unallocatedBudgetNum"></span></h3>
+            <div class="budget" id="unallocatedBudget">
+                <h3>Not yet allocated: <span id = "unallocatedBudgetNum"></span></h3>
             </div>
             <div class="row budgetButton">
-            	<a class="btn" id="payMoney" onclick="payMoney()">Finalize my budget</a>
+                <a class="btn" id="payMoney" onclick="payMoney()">Finalize my budget</a>
             </div>
         </div>
         <div class="col s4">
