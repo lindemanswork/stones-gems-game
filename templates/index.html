@@ -11,7 +11,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col s4">
+        <div class="col s4" id = "left">
             <div class="col s8">
                 <div class="budget" id="stonesBudget">
                     <div class="coins" objectType="stone" id="stoneCoins"></div>
@@ -32,7 +32,7 @@
                 <a class="btn" id="payMoney" >Finalize my budget</a>
             </div>
         </div>
-        <div class="col s4">
+        <div class="col s4" id = "right">
             <div class="col s4">
                 <button class="transferButton" id="toMetal" >To Metal</button>
                 <button class="transferButton" id="fromMetal">To Pot</button>
@@ -48,6 +48,7 @@
 </div>
 {% endblock %} {% block scripts %}
 <script src="/static/js/game.js"></script>
+<script src="/static/js/data.js"></script>
 <script type="text/javascript">
 var num = {{ number }};
 

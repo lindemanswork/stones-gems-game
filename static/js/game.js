@@ -21,9 +21,10 @@ var maxStoneBudget = 10;
 var maxMetalBudget = 10;
 
 //UI stuff
-var stoneImages = [];
-var metalImages = [];
-var colors = [orange, purple, lightOrange, "#800000", "#FF0000"]; //TODO: replace with actual colors
+var stoneImages = ["Stone1.png", "Stone2.png", "Stone3.png", "Stone4.png", "Stone5.png"];
+var metalImages = ["Metal1.png", "Metal2.png", "Metal3.png", "Metal4.png", "Metal5.png"];
+var stoneColors = ["#6c7180", "#4f5057", "#7390a0", "#8181a5", "#9ea3af"]; //stone colors
+var metalColors = ["#80706c", "#b68a61", "#9c6a51", "#af9679", "#c9c4bc"]
 var stonePairings = [];
 var metalPairings = [];
 var nums = generateArrayOfNums(25);
@@ -50,6 +51,10 @@ var unitCondition;
 //only if total condition:
 var totalConditionValue;
 var totalConditionBudgetType;
+
+//user data storage
+var stonePurchases = [];
+var metalPurchases = [];
 
 /*-----new level---------*/
 function newLevel() {
@@ -97,6 +102,7 @@ function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
+    getGameBoardSettings()
 
 }
 
@@ -135,8 +141,8 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
 
         var stone = stoneImages[stoneIndices[0]];
         var metal = metalImages[metalIndices[0]];
-        var metalColor = colors[metalIndices[1]];
-        var stoneColor = colors[stoneIndices[1]];
+        var metalColor = stoneColors[metalIndices[1]];
+        var stoneColor = metalColors[stoneIndices[1]];
 
         createObjectImage("metal", metal, metalColor, i, metalDivID);
         createObjectImage("stone", stone, stoneColor, i, stoneDivID);
@@ -158,7 +164,7 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
  */
 function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
     $("#" + divID).append("<div purchased='false' objectType='" + stoneOrMetal + "' class='" + stoneOrMetal + " object' id='" +
-        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + "<div class='price' id='" + stoneOrMetal + "Price" + i + "'> $" + (parseInt(priceMultipliers[roundsLeft - 1]) * parseInt(window[stoneOrMetal + "Prices"].pop())) + " </div>");
+        stoneOrMetal + i + "'>" + "<img class = 'objectImage' src='/static/images/" + stoneOrMetal + "s/" + imageFile + "'>" + "<div class='price " + stoneOrMetal + "Price' id='" + stoneOrMetal + "Price" + i + "'> $" + (parseInt(priceMultipliers[roundsLeft - 1]) * parseInt(window[stoneOrMetal + "Prices"].pop())) + " </div>");
     $("#" + stoneOrMetal + i).css("background-color", color);
     setObjectClickAction("#" + stoneOrMetal + i);
 }
@@ -305,11 +311,11 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     }
     if (unitCondition == units["total"]) {
         console.log("totalConditionBudgetobjectTo: " + totalConditionBudgetobjectTo)
-        console.log("OBJECTFROM: "+objectFrom)
-        if (objectFrom=="unallocated"){
-        	budgetString = "Budget";
-        }else{
-        	budgetString="sBudget" 
+        console.log("OBJECTFROM: " + objectFrom)
+        if (objectFrom == "unallocated") {
+            budgetString = "Budget";
+        } else {
+            budgetString = "sBudget"
         }
         updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + budgetString)) && (window[fromBudgetString] >= totalConditionValue))
         console.log("Total updateCondition: " + updateCondition)
@@ -355,7 +361,7 @@ function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 1
     if (unitCondition == units["total"]) {
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
-        createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget+metalBudget);
+        createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
     } else if (unitCondition == units["marginal"]) {
         console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
@@ -382,7 +388,7 @@ function createDropDownOptions(numOptions) {
     for (var i = 0; i <= numOptions; i++) {
         result = result + '<option value="' + i + '">' + i + '</option>';
     }
-    console.log(result);
+    //console.log(result);
     return result;
 }
 
