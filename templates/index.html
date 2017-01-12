@@ -12,24 +12,36 @@
     <hr>
     <div class="row">
         <div class="col s4">
-            <div class="budget" id="stonesBudget">
-            	<div class="coins" objectType = "stone" id= "stoneCoins"></div>
-                <h3>Stones Budget: <span id = "stonesBudgetNum"></span></h3></div>
+            <div class="col s8">
+                <div class="budget" id="stonesBudget">
+                    <div class="coins" objectType="stone" id="stoneCoins"></div>
+                    <h3>Stones Budget: <span id = "stonesBudgetNum"></span></h3>
+                </div>
+            </div>
+            <div class="col s4">
+                <button onclick="allocateBudget('#stoneCoins', '#unallocatedCoins')">To Stone</button>
+                <button onclick="allocateBudget('#unallocatedCoins','#stoneCoins' )">To Pot</button>
+            </div>
         </div>
         <div class="col s4">
             <div class="budget" id="unallocatedBudget">
-            <div class="coins" objectType = "unallocated" id= "unallocatedCoins"></div>
+                <div class="coins" objectType="unallocated" id="unallocatedCoins"></div>
                 <h3>Not yet allocated: <span id = "unallocatedBudgetNum"></span></h3>
             </div>
-
             <div class="row budgetButton">
                 <a class="btn" id="payMoney" onclick="payMoney()">Finalize my budget</a>
             </div>
         </div>
         <div class="col s4">
-            <div class="budget" id="metalsBudget">
-            	<div class="coins" objectType = "metal" id= "metalCoins"></div>
-                <h3>Metals Budget: <span id = "metalsBudgetNum"></span></h3></div>
+            <div class="col s4">
+                <button onclick="allocateBudget('#metalCoins', '#unallocatedCoins')">To Metal</button>
+                <button onclick="allocateBudget('#unallocatedCoins','#metalCoins' )">To Pot</button>
+            </div>
+            <div class="col s8">
+                <div class="budget" id="metalsBudget">
+                    <div class="coins" objectType="metal" id="metalCoins"></div>
+                    <h3>Metals Budget: <span id = "metalsBudgetNum"></span></h3></div>
+            </div>
         </div>
     </div>
     <div class="row"></div>
@@ -37,6 +49,7 @@
 {% endblock %} {% block scripts %}
 <script src="/static/js/game.js"></script>
 <script type="text/javascript">
+
 var num = {{ number }};
 
 initGame(num);

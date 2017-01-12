@@ -35,7 +35,10 @@ var nums2 = shuffleArray(nums.slice());
 var budgetToAllocate = 20;
 var stoneBudget = 10;
 var metalBudget = 9;
-var totalPotBudget = budgetToAllocate;
+//add conditions budget
+var stoneAddBudget = 0;
+var metalAddBudget = 0
+var unallocatedBudget = budgetToAllocate;
 var level = 1;
 var metalPrices = [];
 var stonePrices = [];
@@ -99,7 +102,7 @@ function setInitialValues() {
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
     console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
-    totalPotBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
+    unallocatedBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
     initPrices();
 }
 
@@ -184,7 +187,7 @@ function decrementBudget(budgetName, divID) {
 function updateBudgetNumUI() {
     $("#stonesBudgetNum").html(stoneBudget);
     $("#metalsBudgetNum").html(metalBudget);
-    $("#unallocatedBudgetNum").html(totalPotBudget); //TODO: fix this, can't be the sum
+    $("#unallocatedBudgetNum").html(unallocatedBudget); //TODO: fix this, can't be the sum
 }
 
 function generateIndices() {
@@ -235,13 +238,14 @@ function shuffleArray(array) {
  * @return {[type]}                [description]
  */
 function createBudgetArea(startCondition, unitCondition) {
-    if (startCondition == startingpt["add"]) {
+    if (startCondition == startingpt["add"]) { //IN PROGRESS
         console.log("Add condition")
-        createBudgetInput(unitCondition, totalPotBudget, 0, 0);
+        createBudgetInput(unitCondition, unallocatedBudget, 0, 0);
     } else if (startCondition == startingpt["transfer"]) { //from side to side
         console.log("transfer condition");
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
+    	//TODO
         console.log("Cut condition");
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
@@ -250,14 +254,21 @@ function createBudgetArea(startCondition, unitCondition) {
 
 //for add condition
 function allocateBudget(budgetToDiv, budgetFromDiv) {
-	var objectType = $(budgetFromDiv).attr("objectType");
-    if ((objectType == "unallocated") && totalPotBudget > 0) {
-        totalPotBudget--;
-    } else if ((objectType == "stone") && stoneBudget > 0) {
+	console.log("allocate budget clicked!")
+    var objectType = $(budgetFromDiv).attr("objectType");
+    var type = $(budgetToDiv).attr("objectType");
+    if (window[objectType + "Budget"] > 0 && window[type + "AddBudget"]<window[type + "Budget"]) {
+    	
+    	console.log("budgetToDiv type: "+type)
+        window[objectType + "Budget"]--;
+        window[type + "AddBudget"]++;
+        console.log("window[budgetToDiv + 'AddBudget']: "+window[type + "AddBudget"])
 
-    } else if ((objectType == "metal") && metalBudget > 0)
-    else {
-        alert("You have no more coins to allocate from "+objectType);
+        updateCoins(type + "Coins", window[type + "AddBudget"]);
+    } else if (window[type + "AddBudget"]>=window[type + "Budget"]){
+    	alert("You cannot allocate any more to "+type+", maximum budget for "+type+" reached");
+    }else {
+        alert("You have no more coins to allocate from " + objectType);
     }
 
 }
@@ -276,8 +287,8 @@ function updateCoins(divID, numCoins) {
     createCoins(divID, numCoins);
 }
 
-function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, metalBudget = 10) {
-    console.log("total budget: " + totalPotBudget)
+function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 10, metalBudget = 10) {
+    console.log("total budget: " + unallocatedBudget)
     updateBudgetNumUI();
     if (unitCondition == units["total"]) {
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
@@ -286,7 +297,7 @@ function createBudgetInput(unitCondition, totalPotBudget = 0, stoneBudget = 10, 
         console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
         createCoins("metalCoins", metalBudget);
-        createCoins("unallocatedCoins", totalPotBudget);
+        createCoins("unallocatedCoins", unallocatedBudget);
     }
 
 }
