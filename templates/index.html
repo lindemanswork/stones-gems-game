@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="col s4">
-                <button onclick="allocateBudget('#stoneCoins', '#unallocatedCoins')">To Stone</button>
-                <button onclick="allocateBudget('#unallocatedCoins','#stoneCoins' )">To Pot</button>
+                <button class="transferButton" id="toStone" >To Stone</button>
+                <button class="transferButton" id="fromStone" >To Pot</button>
             </div>
         </div>
         <div class="col s4">
@@ -29,13 +29,13 @@
                 <h3>Not yet allocated: <span id = "unallocatedBudgetNum"></span></h3>
             </div>
             <div class="row budgetButton">
-                <a class="btn" id="payMoney" onclick="payMoney()">Finalize my budget</a>
+                <a class="btn" id="payMoney" >Finalize my budget</a>
             </div>
         </div>
         <div class="col s4">
             <div class="col s4">
-                <button onclick="allocateBudget('#metalCoins', '#unallocatedCoins')">To Metal</button>
-                <button onclick="allocateBudget('#unallocatedCoins','#metalCoins' )">To Pot</button>
+                <button class="transferButton" id="toMetal" >To Metal</button>
+                <button class="transferButton" id="fromMetal">To Pot</button>
             </div>
             <div class="col s8">
                 <div class="budget" id="metalsBudget">
@@ -49,8 +49,8 @@
 {% endblock %} {% block scripts %}
 <script src="/static/js/game.js"></script>
 <script type="text/javascript">
-
 var num = {{ number }};
+
 
 initGame(num);
 </script>

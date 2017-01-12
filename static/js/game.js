@@ -175,12 +175,12 @@ function decrementBudget(budgetName, divID) {
     if (window[budgetName] <= 0 && ($(divID).attr("purchased") == "false")) {
         alert("Not enough money to buy more")
     } else if ($(divID).attr("purchased") == "true") {
-       //alert("Already purchased");
-       //return the object
-       $(divID).attr("purchased", "false");
-       $(divID).css("box-shadow", "");
-       window[budgetName]++;
-       updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
+        //alert("Already purchased");
+        //return the object
+        $(divID).attr("purchased", "false");
+        $(divID).css("box-shadow", "");
+        window[budgetName]++;
+        updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
     } else {
         //$(divID).css("background-color", "grey");
         $(divID).css("box-shadow", "inset 0 0 0 1000px rgba(0,0,0,.5)");
@@ -215,11 +215,6 @@ function generateCombinations() {
 }
 
 
-function randomizePrices(multiplier) {
-
-}
-
-
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
@@ -245,35 +240,68 @@ function shuffleArray(array) {
  */
 function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) { //IN PROGRESS
+    	unallocatedBudget = 0;
         console.log("Add condition")
+        setTransferButtonActions("Add")
         createBudgetInput(unitCondition, unallocatedBudget, 0, 0);
     } else if (startCondition == startingpt["transfer"]) { //from side to side
+    	unallocatedBudget = 0;
         console.log("transfer condition");
+        setTransferButtonActions();
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
-    	//TODO
+        //TODO
         console.log("Cut condition");
+        setTransferButtonActions()
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
 
 }
 
+
+function setTransferButtonActions(add = "") {
+    $("#toStone").click(function() {
+        allocateBudget('#stoneCoins', '#unallocatedCoins', add)
+    });
+    $("#fromStone").click(function() {
+        allocateBudget('#unallocatedCoins', '#stoneCoins', add)
+    });
+    $("#toMetal").click(function() {
+        allocateBudget('#metalCoins', '#unallocatedCoins', add)
+    });
+    $("#fromMetal").click(function() {
+        allocateBudget('#unallocatedCoins', '#metalCoins', add)
+    });
+}
+
+
 //for add condition
-function allocateBudget(budgetToDiv, budgetFromDiv) {
-	console.log("allocate budget clicked!")
+function allocateBudget(budgetToDiv, budgetFromDiv, add) {
+    console.log("allocate budget clicked!")
     var objectType = $(budgetFromDiv).attr("objectType");
     var type = $(budgetToDiv).attr("objectType");
-    if (window[objectType + "Budget"] > 0 && window[type + "AddBudget"]<window[type + "Budget"]) {
-    	
-    	console.log("budgetToDiv type: "+type)
+    var updateCoinCondition = true;
+    var updateCoinCondition2 = false;
+    if (add == "add") {
+        updateCoinCondition = (window[objectType + "Budget"] > 0 && window[type + add + "Budget"] < window[type + "Budget"])
+        updateCoinCondition2 = (window[type + add + "Budget"] >= window[type + "Budget"]);
+    } else {
+        updateCoinCondition = (window[objectType + "Budget"] > 0)
+    }
+    if (updateCoinCondition) {
+        //console.log("budgetToDiv type: " + type)
         window[objectType + "Budget"]--;
-        window[type + "AddBudget"]++;
-        console.log("window[budgetToDiv + 'AddBudget']: "+window[type + "AddBudget"])
-
-        updateCoins(type + "Coins", window[type + "AddBudget"]);
-    } else if (window[type + "AddBudget"]>=window[type + "Budget"]){
-    	alert("You cannot allocate any more to "+type+", maximum budget for "+type+" reached");
-    }else {
+        //console.log( "window["+objectType + "Budget]--   :   "+ window[objectType + "Budget"])
+        //console.log("stoneBudget: "+stoneBudget)
+        window[type + add + "Budget"]++;
+        //console.log("window["+type + add + "Budget]:"  + window[type + add + "Budget"])
+        //console.log("unallocatedBudget "+unallocatedBudget)
+        updateCoins(type + "Coins", window[type + add + "Budget"]);
+        updateCoins(objectType + "Coins", window[objectType + add + "Budget"]);
+        updateBudgetNumUI();
+    } else if (updateCoinCondition2) {
+        alert("You cannot allocate any more to " + type + ", maximum budget for " + type + " reached");
+    } else {
         alert("You have no more coins to allocate from " + objectType);
     }
 
