@@ -305,7 +305,13 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     }
     if (unitCondition == units["total"]) {
         console.log("totalConditionBudgetobjectTo: " + totalConditionBudgetobjectTo)
-        updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + "sBudget")) && (window[fromBudgetString] >= totalConditionValue))
+        console.log("OBJECTFROM: "+objectFrom)
+        if (objectFrom=="unallocated"){
+        	budgetString = "Budget";
+        }else{
+        	budgetString="sBudget" 
+        }
+        updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + budgetString)) && (window[fromBudgetString] >= totalConditionValue))
         console.log("Total updateCondition: " + updateCondition)
     }
 
