@@ -172,12 +172,18 @@ function setObjectClickAction(divID) {
 }
 
 function decrementBudget(budgetName, divID) {
-    if (window[budgetName] <= 0) {
+    if (window[budgetName] <= 0 && ($(divID).attr("purchased") == "false")) {
         alert("Not enough money to buy more")
     } else if ($(divID).attr("purchased") == "true") {
-        alert("Already purchased");
+       //alert("Already purchased");
+       //return the object
+       $(divID).attr("purchased", "false");
+       $(divID).css("box-shadow", "");
+       window[budgetName]++;
+       updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
     } else {
-        $(divID).css("background-color", "grey");
+        //$(divID).css("background-color", "grey");
+        $(divID).css("box-shadow", "inset 0 0 0 1000px rgba(0,0,0,.5)");
         $(divID).attr("purchased", "true");
         window[budgetName]--;
         updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
