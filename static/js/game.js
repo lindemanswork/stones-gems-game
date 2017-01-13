@@ -103,7 +103,7 @@ function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
-    getGameBoardSettings()
+    //getGameBoardSettings()
 
 }
 
@@ -182,11 +182,11 @@ function setObjectClickAction(divID) {
         if ($(this).attr("objectType") == "metal") {
             decrementBudget("metalBudget", this);
             updateBudgetChanges(metalBudget, rSides["metal"], round)
-            updatePurchase(pos, "metalPrice" + pos, rSides["metal"], round)
+            updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
             updateBudgetChanges(metalBudget, rSides["stone"], round)
-            updatePurchase(pos, "stonePrice" + pos, rSides["stone"], round)
+            updatePurchase(pos, $("#stonePrice" + pos).html(), rSides["stone"], round)
         }
 
         updateBudgetNumUI();
