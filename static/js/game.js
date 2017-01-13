@@ -127,8 +127,8 @@ function initPrices() {
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
-    //$("#"+metalDivID).append('<img id = "leftTable" class="table" src="/static/images/TableLeft.png" />')
-    //$("#"+stoneDivID).append('<img id = "rightTable" class="table" src="/static/images/TableRight.png"/>')
+    $("#"+metalDivID).append('<div id="'+metalDivID+'ObjectRow" class="objectRow row"></div>')
+    $("#"+stoneDivID).append('<div id="'+stoneDivID+'ObjectRow" class="objectRow row"></div>')
     for (var i = 0; i < numObject; i++) {
         var rand = nums1.pop();
         var rand1 = nums2.pop();
@@ -147,8 +147,8 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         var metalColor = stoneColors[metalIndices[1]];
         var stoneColor = metalColors[stoneIndices[1]];
 
-        createObjectImage("metal", metal, metalColor, i, metalDivID);
-        createObjectImage("stone", stone, stoneColor, i, stoneDivID);
+        createObjectImage("metal", metal, metalColor, i, metalDivID+"ObjectRow");
+        createObjectImage("stone", stone, stoneColor, i, stoneDivID+"ObjectRow");
         delete metalCombinations[rand]
         delete stoneCombinations[rand1]
     }
