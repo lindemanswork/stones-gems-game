@@ -127,8 +127,8 @@ function initPrices() {
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
-    $("#"+metalDivID).append('<div id="'+metalDivID+'ObjectRow" class="objectRow row"></div>')
-    $("#"+stoneDivID).append('<div id="'+stoneDivID+'ObjectRow" class="objectRow row"></div>')
+    $("#" + metalDivID).append('<div id="' + metalDivID + 'ObjectRow" class="objectRow row"></div>')
+    $("#" + stoneDivID).append('<div id="' + stoneDivID + 'ObjectRow" class="objectRow row"></div>')
     for (var i = 0; i < numObject; i++) {
         var rand = nums1.pop();
         var rand1 = nums2.pop();
@@ -147,8 +147,8 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         var metalColor = stoneColors[metalIndices[1]];
         var stoneColor = metalColors[stoneIndices[1]];
 
-        createObjectImage("metal", metal, metalColor, i, metalDivID+"ObjectRow");
-        createObjectImage("stone", stone, stoneColor, i, stoneDivID+"ObjectRow");
+        createObjectImage("metal", metal, metalColor, i, metalDivID + "ObjectRow");
+        createObjectImage("stone", stone, stoneColor, i, stoneDivID + "ObjectRow");
         delete metalCombinations[rand]
         delete stoneCombinations[rand1]
     }
@@ -176,11 +176,19 @@ function setObjectClickAction(divID) {
     //console.log("Set object click action div: " + divID)
     $(divID).click(function() {
         console.log("Click object!")
+        var pos = $(this).attr("id").slice(-1);
+        var round = data["Rounds"] - roundsLeft;
+        console.log("ROUND: " + round)
         if ($(this).attr("objectType") == "metal") {
             decrementBudget("metalBudget", this);
+            updateBudgetChanges(metalBudget, rSides["metal"], round)
+            updatePurchase(pos, "metalPrice" + pos, rSides["metal"], round)
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
+            updateBudgetChanges(metalBudget, rSides["stone"], round)
+            updatePurchase(pos, "stonePrice" + pos, rSides["stone"], round)
         }
+
         updateBudgetNumUI();
         console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
     });
@@ -190,14 +198,12 @@ function setObjectClickAction(divID) {
 function decrementBudget(budgetName, divID) {
     if (window[budgetName] <= 0 && ($(divID).attr("purchased") == "false")) {
         alert("Not enough money to buy more")
-    } else if ($(divID).attr("purchased") == "true") {
-        //alert("Already purchased");
-        //return the object
+    } else if ($(divID).attr("purchased") == "true") { //return the object
         $(divID).attr("purchased", "false");
         $(divID).css("box-shadow", "");
         window[budgetName]++;
         updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
-    } else {
+    } else { //purchase it
         //$(divID).css("background-color", "grey");
         $(divID).css("box-shadow", "inset 0 0 0 1000px rgba(0,0,0,.5)");
         $(divID).attr("purchased", "true");
@@ -271,6 +277,7 @@ function createBudgetArea(startCondition, unitCondition) {
         setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
+    setPayMoneyAction();
 
 }
 
@@ -433,14 +440,14 @@ function selectedBudget(sel, budgetType) {
     console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
 
     //update budget variables
-    var budgetName = budgetType.substring(0,5)+"Budget";
-    console.log("BUDGETNAME: "+budgetName)
-    window[budgetName]=totalConditionValue;
+    var budgetName = budgetType.substring(0, 5) + "Budget";
+    console.log("BUDGETNAME: " + budgetName)
+    window[budgetName] = totalConditionValue;
     //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
     updateBudgetNumUI();
-    console.log("CREATE COINS in div: "+budgetName+ "Coins")
+    console.log("CREATE COINS in div: " + budgetName + "Coins")
 
-    createCoins(budgetName.substring(0,5)+ "Coins", window[budgetName]);
+    createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
 }
 
 userData["stonesBudget"] = [];
@@ -459,4 +466,13 @@ function payMoney() {
     } else {
         alert("Thank you for playing")
     }
+
+    console.log("FINAL RECORDED DATA: ")
+    console.log(recordedData);
+}
+
+function setPayMoneyAction() {
+    $("#payMoney").click(function() {
+        payMoney();
+    })
 }

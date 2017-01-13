@@ -1,6 +1,7 @@
 var recordedData = {};
 
 var sides = { "left": "stone", "right": "metal" }
+var rSides = {"stone":"left","metal":"right"}
 
 function getGameBoardSettings() {
     recordedData["rounds"] = [];
@@ -45,20 +46,14 @@ function initPurchaseData() {
     return purchase;
 }
 
-/*	
-"purchases": {
-                			"clicks_positions": [3,5,5,4,7,10],
-                			"time": ["2011-07-14T19:43:37+0100", "2011-07-14T19:43:37+0100", "2011-07-14T19:43:37+0100", "2011-07-14T19:43:37+0100"],
-                			"purchased_prices": [8,8,6,6,4]
-                			}
-                			*/
 
-function updateBudgetChanges(newBudgetValue, side, round = roundsLeft) {
+function updateBudgetChanges(newBudgetValue, side, round = 0) {
+	console.log("updateBudgetChanges round: "+round)
     recordedData["rounds"][round][side]["budget"]["changes"].push(newBudgetValue);
     recordedData["rounds"][round][side]["budget"]["time"].push(timestamp());
 }
 
-function updatePurchase(purchasePosition, purchasePrice, side, round = roundsLeft) {
+function updatePurchase(purchasePosition, purchasePrice, side, round = 0) {
     recordedData["rounds"][round][side]["purchases"]["click_positions"].push(purchasePosition);
     recordedData["rounds"][round][side]["purchases"]["purchased_prices"].push(purchasePrice);
     recordedData["rounds"][round][side]["purchases"]["time"].push(timestamp());
