@@ -77,16 +77,19 @@ p {
 
 .vendor {
     height: 300px;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    text-align: center;
 }
 
 #stonesVendor {
     background-image: url("/static/images/TableLeft.png");
+
 }
 
 #metalsVendor {
     background-image: url("/static/images/TableRight.png");
+
 }
 
 .shopkeepers,
