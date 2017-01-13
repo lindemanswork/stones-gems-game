@@ -285,7 +285,8 @@ function setTransferButtonUI(unitCondition) {
             }
             i++;
         } else if (unitCondition == units["total"]) {
-            $(this).css("display", "none");
+            //$(this).css("display", "none");
+            $(".transfer").css("display", "none");
         }
     })
 }

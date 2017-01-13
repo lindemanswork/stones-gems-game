@@ -57,7 +57,7 @@ p {
     margin: auto;
 }
 
-.budget {
+#right, #left, .budget {
     text-align: center;
 }
 
