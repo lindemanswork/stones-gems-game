@@ -49,8 +49,9 @@ var stonePrices = [];
 var priceMultipliers = [];
 var unitCondition;
 //only if total condition:
-var totalConditionValue;
-var totalConditionBudgetType;
+var totalConditionValue = "";
+var totalConditionBudgetType = "";
+var totalConditionBudgetobjectTo = "";
 
 //user data storage
 var stonePurchases = [];
@@ -126,8 +127,8 @@ function initPrices() {
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
-	//$("#"+metalDivID).append('<img id = "leftTable" class="table" src="/static/images/TableLeft.png" />')
-	//$("#"+stoneDivID).append('<img id = "rightTable" class="table" src="/static/images/TableRight.png"/>')
+    //$("#"+metalDivID).append('<img id = "leftTable" class="table" src="/static/images/TableLeft.png" />')
+    //$("#"+stoneDivID).append('<img id = "rightTable" class="table" src="/static/images/TableRight.png"/>')
     for (var i = 0; i < numObject; i++) {
         var rand = nums1.pop();
         var rand1 = nums2.pop();
@@ -257,24 +258,36 @@ function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) { //IN PROGRESS
         unallocatedBudget = 0;
         console.log("Add condition")
-        setTransferButtonActions("Add")
+        setTransferButtons("Add")
         createBudgetInput(unitCondition, unallocatedBudget, 0, 0);
     } else if (startCondition == startingpt["transfer"]) { //from side to side
         unallocatedBudget = 0;
         console.log("transfer condition");
-        setTransferButtonActions();
+        setTransferButtons();
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
         //TODO
         console.log("Cut condition");
-        setTransferButtonActions()
+        setTransferButtons()
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
 
 }
 
+function setTransferButtonUI() {
+    var i = 1;
+    $(".transferButton").each(function() {
+        if (i % 2 == 0) {
+            $(this).attr("src", "/static/images/RightArrow.png");
+        } else {
+            $(this).attr("src", "/static/images/LeftArrow.png")
+        }
+        i++;
+    })
+}
 
-function setTransferButtonActions(add = "") {
+function setTransferButtons(add = "") {
+    setTransferButtonUI();
     $("#toStone").click(function() {
         allocateBudget('#stoneCoins', '#unallocatedCoins', add)
     });
@@ -298,22 +311,31 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     var updateCondition = true;
     var updateCondition2 = false;
     var fromBudgetString;
-    if (totalConditionBudgetobjectTo == "unallocatedBudget") {
-        fromBudgetString = totalConditionBudgetobjectTo.substring(0, 11) + "Budget";
-    } else {
-        fromBudgetString = totalConditionBudgetobjectTo.substring(0, 5) + "Budget";
+    if (unitCondition == units["total"]) {
+        if (totalConditionBudgetobjectTo == "unallocatedBudget") {
+            fromBudgetString = totalConditionBudgetobjectTo.substring(0, 11) + "Budget";
+        } else {
+            fromBudgetString = totalConditionBudgetobjectTo.substring(0, 5) + "Budget";
+        }
+    }else{
+    	fromBudgetString = objectFrom+"Budget";
     }
-    console.log("fromBudgetString: " + fromBudgetString)
+    //console.log("fromBudgetString: " + fromBudgetString)
+
     if (add == "add") {
+        console.log("MARGINAL CONDITION add")
         updateCondition = (window[objectFrom + "Budget"] > 0 && window[objectTo + add + "Budget"] < window[objectTo + "Budget"])
         updateCondition2 = (window[objectTo + add + "Budget"] >= window[objectTo + "Budget"]);
     } else {
+
+        console.log("MARGINAL CONDITION not add")
         updateCondition = (window[fromBudgetString] > 0)
+        console.log("window[" + fromBudgetString+"]: "+window[fromBudgetString]);
         updateCondition2 = (window[objectTo + add + "Budget"] > window[objectTo + "Budget"]);
     }
+
     if (unitCondition == units["total"]) {
-        console.log("totalConditionBudgetobjectTo: " + totalConditionBudgetobjectTo)
-        console.log("OBJECTFROM: " + objectFrom)
+        console.log("TOTAL CONDITION")
         if (objectFrom == "unallocated") {
             budgetString = "Budget";
         } else {
