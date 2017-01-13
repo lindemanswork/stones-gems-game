@@ -111,10 +111,10 @@ function setInitialValues() {
     if (roundsLeft == null) {
         roundsLeft = parseInt(data["Rounds"]);
     }
-    console.log("Rounds left: " + roundsLeft)
+    //console.log("Rounds left: " + roundsLeft)
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
-    console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
+    //console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
     unallocatedBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
     unitCondition = data["unitCondition"];
     initPrices();
@@ -175,15 +175,15 @@ function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
 function setObjectClickAction(divID) {
     //console.log("Set object click action div: " + divID)
     $(divID).click(function() {
-        console.log("Click object!")
+        //console.log("Click object!")
         var pos = $(this).attr("id").slice(-1);
         var round = data["Rounds"] - roundsLeft;
-        console.log("ROUND: " + round)
+        //console.log("ROUND: " + round)
         if ($(this).attr("objectType") == "metal") {
             decrementBudget("metalBudget", this);
             updateBudgetChanges(metalBudget, rSides["metal"], round)
 
-            console.log("UPDATE PURCHASE WITH PRICE: " + $("#metalPrice" + pos).html());
+            //console.log("UPDATE PURCHASE WITH PRICE: " + $("#metalPrice" + pos).html());
             updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
@@ -192,7 +192,7 @@ function setObjectClickAction(divID) {
         }
 
         updateBudgetNumUI();
-        console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
+        //console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
     });
 
 }
@@ -344,14 +344,14 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     //console.log("fromBudgetString: " + fromBudgetString)
 
     if (add == "add") {
-        console.log("MARGINAL CONDITION add")
+        //console.log("MARGINAL CONDITION add")
         updateCondition = (window[objectFrom + "Budget"] > 0 && window[objectTo + add + "Budget"] < window[objectTo + "Budget"])
         updateCondition2 = (window[objectTo + add + "Budget"] >= window[objectTo + "Budget"]);
     } else {
 
-        console.log("MARGINAL CONDITION not add")
+        //console.log("MARGINAL CONDITION not add")
         updateCondition = (window[fromBudgetString] > 0)
-        console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
+        //console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
         updateCondition2 = (window[objectTo + add + "Budget"] > window[objectTo + "Budget"]);
     }
 
@@ -402,7 +402,7 @@ function updateCoins(divID, numCoins) {
 }
 
 function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 10, metalBudget = 10) {
-    console.log("total budget: " + unallocatedBudget)
+    //console.log("total budget: " + unallocatedBudget)
     if (unitCondition == units["total"]) {
         updateBudgetNumUI(0, "", 0);
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
@@ -410,7 +410,7 @@ function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 1
         //createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
     } else if (unitCondition == units["marginal"]) {
         updateBudgetNumUI();
-        console.log("Marginal conditions!!!")
+        //console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
         createCoins("metalCoins", metalBudget);
         createCoins("unallocatedCoins", unallocatedBudget);
@@ -420,7 +420,7 @@ function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 1
 
 
 function createDropDown(divID, name, numOptions = 10) {
-    console.log("CreateDropdown divid: " + divID)
+    //console.log("CreateDropdown divid: " + divID)
     $("#" + divID).append('<div class="input-field col s4 offset-s4 budgetDropdown">' +
         '<select onchange="selectedBudget(this,\'' + divID + '\')" id = "' + divID + 'dropDown">' +
         createDropDownOptions(numOptions) +
@@ -444,15 +444,15 @@ function selectedBudget(sel, budgetType) {
     var value = sel.options[sel.selectedIndex].value;
     totalConditionValue = parseInt(value);
     totalConditionBudgetobjectTo = budgetType;
-    console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
+    //console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
 
     //update budget variables
     var budgetName = budgetType.substring(0, 5) + "Budget";
-    console.log("BUDGETNAME: " + budgetName)
+    //console.log("BUDGETNAME: " + budgetName)
     window[budgetName] = totalConditionValue;
     //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
     updateBudgetNumUI();
-    console.log("CREATE COINS in div: " + budgetName + "Coins")
+    //console.log("CREATE COINS in div: " + budgetName + "Coins")
 
     createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
 }
@@ -472,7 +472,7 @@ function payMoney() {
     */
     console.log("Level: " + level)
     console.log("Data rounds: " + parseInt(data["Rounds"]))
-    console.log(data["Rounds"])
+    //console.log(data["Rounds"])
     if (level < parseInt(data["Rounds"])) {
         newLevel();
     } else {
