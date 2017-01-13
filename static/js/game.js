@@ -435,8 +435,11 @@ function selectedBudget(sel, budgetType) {
     var budgetName = budgetType.substring(0,5)+"Budget";
     console.log("BUDGETNAME: "+budgetName)
     window[budgetName]=totalConditionValue;
-    updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
+    //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
     updateBudgetNumUI();
+    console.log("CREATE COINS in div: "+budgetName+ "Coins")
+
+    createCoins(budgetName.substring(0,5)+ "Coins", window[budgetName]);
 }
 
 userData["stonesBudget"] = [];
