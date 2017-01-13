@@ -5,6 +5,15 @@ var rSides = {"stone":"left","metal":"right"}
 
 recordedData["rounds"] = [];
 
+
+
+function logInitialData() {
+    var url = window.location.href;
+    recordedData["url"] = url;
+    recordedData["_id"] = url.split('?')[1];
+    recordedData["time"] = timestamp();
+}
+
 function setGameBoardSettings() {
     var static = { "left": staticSettings("left", "stone"), "right": staticSettings("right", "metal") }
     recordedData["rounds"].push(static)

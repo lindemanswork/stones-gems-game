@@ -40,7 +40,7 @@ var metalBudget = 9;
 var stoneAddBudget = 0;
 var metalAddBudget = 0
 var unallocatedBudget = budgetToAllocate;
-var level = 1;
+var level = 0;
 var roundsLeft;
 
 //static
@@ -59,10 +59,9 @@ var metalPurchases = [];
 
 /*-----new level---------*/
 function newLevel() {
-    roundsLeft--;
+    //roundsLeft--;
     console.log("Rounds left after new level: " + roundsLeft)
     console.log("NEW LEVEL!")
-    level++;
     clearScreen();
     initUIVariables();
     generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
@@ -183,6 +182,8 @@ function setObjectClickAction(divID) {
         if ($(this).attr("objectType") == "metal") {
             decrementBudget("metalBudget", this);
             updateBudgetChanges(metalBudget, rSides["metal"], round)
+
+            console.log("UPDATE PURCHASE WITH PRICE: " + $("#metalPrice" + pos).html());
             updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
@@ -301,18 +302,23 @@ function setTransferButtonUI(unitCondition) {
 
 function setTransferButtons(unitCondition, add = "") {
     setTransferButtonUI(unitCondition);
+    var round = data["Rounds"] - roundsLeft;
     if (unitCondition == units["marginal"]) {
         $("#toStone").click(function() {
-            allocateBudget('#stoneCoins', '#unallocatedCoins', add)
+            allocateBudget('#stoneCoins', '#unallocatedCoins', add);
+            updateBudgetChanges(stoneBudget, rSides["stone"], round)
         });
         $("#fromStone").click(function() {
-            allocateBudget('#unallocatedCoins', '#stoneCoins', add)
+            allocateBudget('#unallocatedCoins', '#stoneCoins', add);
+            updateBudgetChanges(stoneBudget, rSides["stone"], round)
         });
         $("#toMetal").click(function() {
-            allocateBudget('#metalCoins', '#unallocatedCoins', add)
+            allocateBudget('#metalCoins', '#unallocatedCoins', add);
+            updateBudgetChanges(metalBudget, rSides["metal"], round);
         });
         $("#fromMetal").click(function() {
-            allocateBudget('#unallocatedCoins', '#metalCoins', add)
+            allocateBudget('#unallocatedCoins', '#metalCoins', add);
+            updateBudgetChanges(metalBudget, rSides["metal"], round);
         });
     }
 }
@@ -455,6 +461,7 @@ function selectedBudget(sel, budgetType) {
 //userData["metalsBudget"] = [];
 
 function payMoney() {
+	console.log("------CAll PAY MONEY-------")
     /*
     var stonesBudget = $("#stonesBudgetdropDown").val();
     var metalsBudget = $("#metalsBudgetdropDown").val();
@@ -463,14 +470,22 @@ function payMoney() {
     console.log("User data: ");
     console.log(userData);
     */
-    if (roundsLeft > 1) {
+    console.log("Level: " + level)
+    console.log("Data rounds: " + parseInt(data["Rounds"]))
+    console.log(data["Rounds"])
+    if (level < parseInt(data["Rounds"])) {
         newLevel();
     } else {
         logUserData(recordedData);
         console.log("FINAL RECORDED DATA: ")
         console.log(recordedData);
+        $("#payMoney").prop("disabled", true);
         alert("Thank you for playing");
+
     }
+    level++;
+    roundsLeft--;
+
 
 
 }

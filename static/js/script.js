@@ -111,14 +111,6 @@ function getSettings(gameVersion, callback) {
 
 }
 
-var userData = {};
-
-function logInitialData() {
-    var url = window.location.href;
-    userData["url"] = url;
-    userData["_id"] = url.split('?')[1];
-    userData["time"] = timestamp();
-}
 
 
 function initGame(gameVersion) {
