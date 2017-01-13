@@ -258,48 +258,54 @@ function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) { //IN PROGRESS
         unallocatedBudget = 0;
         console.log("Add condition")
-        setTransferButtons("Add")
+        setTransferButtons(unitCondition, "Add")
         createBudgetInput(unitCondition, unallocatedBudget, 0, 0);
     } else if (startCondition == startingpt["transfer"]) { //from side to side
         unallocatedBudget = 0;
         console.log("transfer condition");
-        setTransferButtons();
+        setTransferButtons(unitCondition);
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
         //TODO
         console.log("Cut condition");
-        setTransferButtons()
+        setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
 
 }
 
-function setTransferButtonUI() {
+function setTransferButtonUI(unitCondition) {
     var i = 1;
     $(".transferButton").each(function() {
-        if (i==2 || i == 3) {
-            $(this).attr("src", "/static/images/RightArrow.png");
-        } else {
-            $(this).attr("src", "/static/images/LeftArrow.png")
+        if (unitCondition == units["marginal"]) {
+            if (i == 2 || i == 3) {
+                $(this).attr("src", "/static/images/RightArrow.png");
+            } else {
+                $(this).attr("src", "/static/images/LeftArrow.png")
+            }
+            i++;
+        } else if (unitCondition == units["total"]) {
+            $(this).css("display", "none");
         }
-        i++;
     })
 }
 
-function setTransferButtons(add = "") {
-    setTransferButtonUI();
-    $("#toStone").click(function() {
-        allocateBudget('#stoneCoins', '#unallocatedCoins', add)
-    });
-    $("#fromStone").click(function() {
-        allocateBudget('#unallocatedCoins', '#stoneCoins', add)
-    });
-    $("#toMetal").click(function() {
-        allocateBudget('#metalCoins', '#unallocatedCoins', add)
-    });
-    $("#fromMetal").click(function() {
-        allocateBudget('#unallocatedCoins', '#metalCoins', add)
-    });
+function setTransferButtons(unitCondition, add = "") {
+    setTransferButtonUI(unitCondition);
+    if (unitCondition == units["marginal"]) {
+        $("#toStone").click(function() {
+            allocateBudget('#stoneCoins', '#unallocatedCoins', add)
+        });
+        $("#fromStone").click(function() {
+            allocateBudget('#unallocatedCoins', '#stoneCoins', add)
+        });
+        $("#toMetal").click(function() {
+            allocateBudget('#metalCoins', '#unallocatedCoins', add)
+        });
+        $("#fromMetal").click(function() {
+            allocateBudget('#unallocatedCoins', '#metalCoins', add)
+        });
+    }
 }
 
 
@@ -311,15 +317,15 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     var updateCondition = true;
     var updateCondition2 = false;
     var fromBudgetString;
-    if (unitCondition == units["total"]) {
+    /*if (unitCondition == units["total"]) {
         if (totalConditionBudgetobjectTo == "unallocatedBudget") {
             fromBudgetString = totalConditionBudgetobjectTo.substring(0, 11) + "Budget";
         } else {
             fromBudgetString = totalConditionBudgetobjectTo.substring(0, 5) + "Budget";
         }
-    }else{
-    	fromBudgetString = objectFrom+"Budget";
-    }
+    }else{*/
+    fromBudgetString = objectFrom + "Budget";
+    // }
     //console.log("fromBudgetString: " + fromBudgetString)
 
     if (add == "add") {
@@ -330,21 +336,22 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
 
         console.log("MARGINAL CONDITION not add")
         updateCondition = (window[fromBudgetString] > 0)
-        console.log("window[" + fromBudgetString+"]: "+window[fromBudgetString]);
+        console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
         updateCondition2 = (window[objectTo + add + "Budget"] > window[objectTo + "Budget"]);
     }
 
-    if (unitCondition == units["total"]) {
-        console.log("TOTAL CONDITION")
-        if (objectFrom == "unallocated") {
-            budgetString = "Budget";
-        } else {
-            budgetString = "sBudget"
+    /*
+        if (unitCondition == units["total"]) {
+            console.log("TOTAL CONDITION")
+            if (objectFrom == "unallocated") {
+                budgetString = "Budget";
+            } else {
+                budgetString = "sBudget"
+            }
+            updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + budgetString)) && (window[fromBudgetString] >= totalConditionValue))
+            console.log("Total updateCondition: " + updateCondition)
         }
-        updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + budgetString)) && (window[fromBudgetString] >= totalConditionValue))
-        console.log("Total updateCondition: " + updateCondition)
-    }
-
+    */
     if (updateCondition) {
         if (unitCondition == units["marginal"]) {
             window[objectFrom + "Budget"]--;
@@ -383,10 +390,10 @@ function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 1
     console.log("total budget: " + unallocatedBudget)
     updateBudgetNumUI();
     if (unitCondition == units["total"]) {
-    	//$(".transferButton").css("display","none");
+        //$(".transferButton").css("display","none");
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
-        createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
+        //createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
     } else if (unitCondition == units["marginal"]) {
         console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
@@ -423,6 +430,13 @@ function selectedBudget(sel, budgetType) {
     totalConditionValue = parseInt(value);
     totalConditionBudgetobjectTo = budgetType;
     console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
+
+    //update budget variables
+    var budgetName = budgetType.substring(0,5)+"Budget";
+    console.log("BUDGETNAME: "+budgetName)
+    window[budgetName]=totalConditionValue;
+    updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
+    updateBudgetNumUI();
 }
 
 userData["stonesBudget"] = [];
