@@ -2,16 +2,34 @@
 <div id="gameScreen">
     <div class="row">Instructions</div>
     <div class="row">
-        <div class="col s6 vendor">Vendor 1
-            <div id="stonesVendor"></div>
+        <div class="row shopkeepers">
+            <div class="col s6">
+                <div class="shopkeeper"><img class="shopGuy" src="/static/images/ShopSign_wSKeeper1.png">
+                    <div id="guyRight" class="signMessage">
+                        <h1>PRECIOUS STONES</h1>
+                        <p>EACH STONE CHUNK NOW ONLY $1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s6">
+                <div class="shopkeeper"><img class="shopGuy" src="/static/images/ShopSign_wSKeeper2.png">
+                    <div class="signMessage">
+                        <h1>PRECIOUS METALS</h1>
+                        <p>EACH METAL CHUNK NOW ONLY $1</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col s6 vendor">Vendor 2
-            <div id="metalsVendor"></div>
+        <div class="col s6 vendors">
+            <div class="vendor" id="stonesVendor"></div>
+        </div>
+        <div class="col s6 vendors">
+            <div class="vendor" id="metalsVendor"></div>
         </div>
     </div>
     <hr>
     <div class="row">
-        <div class="col s4" id = "left">
+        <div class="col s4" id="left">
             <div class="col s8">
                 <div class="budget" id="stonesBudget">
                     <div class="coins" objectType="stone" id="stoneCoins"></div>
@@ -19,8 +37,8 @@
                 </div>
             </div>
             <div class="col s4">
-                <button class="transferButton" id="toStone" >To Stone</button>
-                <button class="transferButton" id="fromStone" >To Pot</button>
+                <button class="transferButton" id="toStone">To Stone</button>
+                <button class="transferButton" id="fromStone">To Pot</button>
             </div>
         </div>
         <div class="col s4">
@@ -29,12 +47,12 @@
                 <h3>Not yet allocated: <span id = "unallocatedBudgetNum"></span></h3>
             </div>
             <div class="row budgetButton">
-                <a class="btn" id="payMoney" >Finalize my budget</a>
+                <a class="btn" id="payMoney">Finalize my budget</a>
             </div>
         </div>
-        <div class="col s4" id = "right">
+        <div class="col s4" id="right">
             <div class="col s4">
-                <button class="transferButton" id="toMetal" >To Metal</button>
+                <button class="transferButton" id="toMetal">To Metal</button>
                 <button class="transferButton" id="fromMetal">To Pot</button>
             </div>
             <div class="col s8">

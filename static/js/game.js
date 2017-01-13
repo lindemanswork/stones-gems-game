@@ -126,6 +126,8 @@ function initPrices() {
 }
 
 function generateObjects(metalDivID, stoneDivID, numObject) {
+	//$("#"+metalDivID).append('<img id = "leftTable" class="table" src="/static/images/TableLeft.png" />')
+	//$("#"+stoneDivID).append('<img id = "rightTable" class="table" src="/static/images/TableRight.png"/>')
     for (var i = 0; i < numObject; i++) {
         var rand = nums1.pop();
         var rand1 = nums2.pop();
