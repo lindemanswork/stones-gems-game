@@ -110,14 +110,17 @@ p {
 }
 
 .signMessage * {
-    margin-left: 20px;
+    position: relative;
+    margin-left: 30px;
     width: 70%;
     word-wrap: break-word;
 }
 
 #guyRight {
-    margin-left: 90px;
+    margin-left: 130px;
 }
+
+
 
 .shopGuy {
     width: 90%;

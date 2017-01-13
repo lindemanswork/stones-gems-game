@@ -277,7 +277,7 @@ function createBudgetArea(startCondition, unitCondition) {
 function setTransferButtonUI() {
     var i = 1;
     $(".transferButton").each(function() {
-        if (i % 2 == 0) {
+        if (i==2 || i == 3) {
             $(this).attr("src", "/static/images/RightArrow.png");
         } else {
             $(this).attr("src", "/static/images/LeftArrow.png")
@@ -383,6 +383,7 @@ function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 1
     console.log("total budget: " + unallocatedBudget)
     updateBudgetNumUI();
     if (unitCondition == units["total"]) {
+    	//$(".transferButton").css("display","none");
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
         createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
