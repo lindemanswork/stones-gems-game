@@ -21,13 +21,16 @@ p {
     font-size: 12px;
 }
 
-.main {}
+.main {
+    min-height: 100%;
+}
 
 #gameScreen {
     margin-left: 10%;
     margin-right: 10%;
     background-color: white !important;
-    height: 100%;
+    min-height: 100%;
+    min-width: 1024px;
 }
 
 .panel {
@@ -79,18 +82,16 @@ p {
     height: 300px;
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center; 
+    background-position: center;
     text-align: center;
 }
 
 #stonesVendor {
     background-image: url("/static/images/TableLeft.png");
-
 }
 
 #metalsVendor {
     background-image: url("/static/images/TableRight2.png");
-
 }
 
 .shopkeepers,
@@ -105,26 +106,36 @@ p {
 }
 
 .signMessage {
-    word-wrap: break-word;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     height: 200px;
+    min-width: 489px;
+    position: relative;
 }
 
-.signMessage * {
-
+.text {
+    position: absolute;
+    word-wrap: break-word;
+    width: 70%;
+    margin-top: 30px;
 }
 
-#shopGuy1{
+#shopGuy1 .text {}
+
+#shopGuy2 .text {
+    margin-left: 180px;
+}
+
+.signMessage * {}
+
+#shopGuy1 {
     background-image: url('/static/images/ShopSign_wSKeeper2.png');
-
 }
 
-#shopGuy2{
+#shopGuy2 {
     background-image: url('/static/images/ShopSign_wSKeeper1.png');
 }
-
 
 .object {
     display: inline-block;
