@@ -105,30 +105,26 @@ p {
 }
 
 .signMessage {
-    width: 30%;
     word-wrap: break-word;
-    z-index: 100;
-    position: absolute;
-    margin-top: -150px;
-    margin-left: 200px: left: 30px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
 }
 
 .signMessage * {
-    position: relative;
-    margin-left: 30px;
-    width: 70%;
-    word-wrap: break-word;
+
 }
 
-#guyRight {
-    margin-left: 130px;
+#shopGuy1{
+    background-image: url('/static/images/ShopSign_wSKeeper2.png');
+
 }
 
-
-
-.shopGuy {
-    width: 90%;
+#shopGuy2{
+    background-image: url('/static/images/ShopSign_wSKeeper1.png');
 }
+
 
 .object {
     display: inline-block;
