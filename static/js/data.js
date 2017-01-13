@@ -3,8 +3,9 @@ var recordedData = {};
 var sides = { "left": "stone", "right": "metal" }
 var rSides = {"stone":"left","metal":"right"}
 
+recordedData["rounds"] = [];
+
 function setGameBoardSettings() {
-    recordedData["rounds"] = [];
     var static = { "left": staticSettings("left", "stone"), "right": staticSettings("right", "metal") }
     recordedData["rounds"].push(static)
     console.log(recordedData)

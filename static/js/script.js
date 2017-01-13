@@ -128,7 +128,6 @@ function initGame(gameVersion) {
         console.log(data);
         generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
         createBudgetArea(data["startCondition"], data["unitCondition"]);
-        setGameBoardSettings();
     });
 
 }

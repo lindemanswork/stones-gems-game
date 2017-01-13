@@ -85,6 +85,7 @@ function clearScreen() {
     $("#stoneCoins").empty();
     $("#metalsBudgetNum").empty();
     $("#stonesBudgetNum").empty();
+    $(".budgetDropdown").remove();
 }
 
 /*----------randomize UI-----------*/
@@ -103,7 +104,7 @@ function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
-    //getGameBoardSettings()
+    setGameBoardSettings()
 
 }
 
@@ -185,7 +186,7 @@ function setObjectClickAction(divID) {
             updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
         } else if ($(this).attr("objectType") == "stone") {
             decrementBudget("stoneBudget", this);
-            updateBudgetChanges(metalBudget, rSides["stone"], round)
+            updateBudgetChanges(stoneBudget, rSides["stone"], round)
             updatePurchase(pos, $("#stonePrice" + pos).html(), rSides["stone"], round)
         }
 
@@ -212,10 +213,10 @@ function decrementBudget(budgetName, divID) {
     }
 }
 
-function updateBudgetNumUI() {
-    $("#stonesBudgetNum").html(stoneBudget);
-    $("#metalsBudgetNum").html(metalBudget);
-    $("#unallocatedBudgetNum").html(unallocatedBudget); //TODO: fix this, can't be the sum
+function updateBudgetNumUI(stoneBudget1 = stoneBudget, metalBudget1 = metalBudget, unallocatedBudget1 = unallocatedBudget) {
+    $("#stonesBudgetNum").html(stoneBudget1);
+    $("#metalsBudgetNum").html(metalBudget1);
+    $("#unallocatedBudgetNum").html(unallocatedBudget1); //TODO: fix this, can't be the sum
 }
 
 function generateIndices() {
@@ -396,13 +397,13 @@ function updateCoins(divID, numCoins) {
 
 function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 10, metalBudget = 10) {
     console.log("total budget: " + unallocatedBudget)
-    updateBudgetNumUI();
     if (unitCondition == units["total"]) {
-        //$(".transferButton").css("display","none");
+        updateBudgetNumUI(0, "", 0);
         createDropDown("stonesBudget", "Stone Budget", stoneBudget);
         createDropDown("metalsBudget", "Metals Budget", metalBudget);
         //createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
     } else if (unitCondition == units["marginal"]) {
+        updateBudgetNumUI();
         console.log("Marginal conditions!!!")
         createCoins("stoneCoins", stoneBudget);
         createCoins("metalCoins", metalBudget);
@@ -462,15 +463,16 @@ function payMoney() {
     console.log("User data: ");
     console.log(userData);
     */
-    logUserData(recordedData);
     if (roundsLeft > 1) {
         newLevel();
     } else {
-        alert("Thank you for playing")
+        logUserData(recordedData);
+        console.log("FINAL RECORDED DATA: ")
+        console.log(recordedData);
+        alert("Thank you for playing");
     }
 
-    console.log("FINAL RECORDED DATA: ")
-    console.log(recordedData);
+
 }
 
 function setPayMoneyAction() {
