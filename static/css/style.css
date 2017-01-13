@@ -11,6 +11,7 @@ body {
 h3 {
     text-align: center;
     font-size: 15px;
+    font-weight: bold;
 }
 
 h1 {
@@ -74,6 +75,10 @@ p {
     background: #ffc571;
 }
 
+.coins{
+    min-height: 52px;
+}
+
 .vendors {
     text-align: center;
 }
@@ -119,6 +124,15 @@ p {
     word-wrap: break-word;
     width: 70%;
     margin-top: 30px;
+}
+
+.text p{
+    color: #3a3e49;
+}
+
+.text h1{
+    color: #ec5d2b;
+    font-weight: bold;
 }
 
 #shopGuy1 .text {}
