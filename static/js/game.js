@@ -450,17 +450,19 @@ function selectedBudget(sel, budgetType) {
     createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
 }
 
-userData["stonesBudget"] = [];
-userData["metalsBudget"] = [];
+//userData["stonesBudget"] = [];
+//userData["metalsBudget"] = [];
 
 function payMoney() {
+    /*
     var stonesBudget = $("#stonesBudgetdropDown").val();
     var metalsBudget = $("#metalsBudgetdropDown").val();
     userData["stonesBudget"] = [{ "budget": stonesBudget, "time": timestamp() }];
     userData["metalsBudget"] = [{ "budget": metalsBudget, "time": timestamp() }];
     console.log("User data: ");
     console.log(userData);
-    logUserData(userData);
+    */
+    logUserData(recordedData);
     if (roundsLeft > 1) {
         newLevel();
     } else {
