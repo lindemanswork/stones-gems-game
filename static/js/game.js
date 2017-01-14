@@ -114,8 +114,9 @@ function setInitialValues() {
     //console.log("Rounds left: " + roundsLeft)
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
+    totalUnallocatedBudget = stoneBudget + metalBudget;
     //console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
-    unallocatedBudget = stoneBudget + metalBudget; //TODO: fix this, can't be the sum depending on initial conditions
+    unallocatedBudget = totalUnallocatedBudget; //TODO: fix this, can't be the sum depending on initial conditions
     unitCondition = data["unitCondition"];
     initPrices();
 }
@@ -205,12 +206,14 @@ function decrementBudget(budgetName, divID) {
         $(divID).css("box-shadow", "");
         window[budgetName]++;
         updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
+        updateCoins("unallocatedCoins", unallocatedBudget);
     } else { //purchase it
         //$(divID).css("background-color", "grey");
         $(divID).css("box-shadow", "inset 0 0 0 1000px rgba(0,0,0,.5)");
         $(divID).attr("purchased", "true");
         window[budgetName]--;
         updateCoins($(divID).attr("objectType") + "Coins", window[budgetName]);
+        updateCoins("unallocatedCoins", unallocatedBudget);
     }
 }
 
@@ -351,7 +354,7 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
 
         //console.log("MARGINAL CONDITION not add")
         updateCondition = (window[fromBudgetString] > 0)
-        //console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
+            //console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
         updateCondition2 = (window[objectTo + add + "Budget"] > window[objectTo + "Budget"]);
     }
 
@@ -372,7 +375,9 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
             window[objectFrom + "Budget"]--;
             window[objectTo + add + "Budget"]++;
             updateCoins(objectTo + "Coins", window[objectTo + add + "Budget"]);
+            console.log('objectTo + add + "Budget": ' + objectTo + add + "Budget")
             updateCoins(objectFrom + "Coins", window[objectFrom + add + "Budget"]);
+            console.log("unallocated budget: " + unallocatedBudget)
         } else if (unitCondition == units["total"]) {
 
             window[fromBudgetString] = window[fromBudgetString] - totalConditionValue;
@@ -388,12 +393,37 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
 }
 
 function createCoins(divID, numCoins) {
-    for (var i = 0; i < numCoins; i++) {
-        $("#" + divID).html("<div class='coin'></div>" + $("#" + divID).html());
-        if ((i + 1) % 5 == 0 && i != 0) {
-            $("#" + divID).html("<br>" + $("#" + divID).html());
-        }
+    console.log("createCoins divID: " + divID)
+    var totalStoneBudget = data["stonesBudget"];
+    var totalMetalBudget = data["metalsBudget"];
+    var percent;
+    var height;
+    $("#" + divID).empty();
+    var c = $("#" + divID).get(0);
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height);
+    if (divID.charAt(0) == 's') {
+        percent = stoneBudget / totalStoneBudget;
+        height = c.height / totalStoneBudget;
+    } else if (divID.charAt(0) == 'm') {
+        percent = metalBudget / totalMetalBudget;
+        height = c.height / totalMetalBudget;
+    } else if (divID.charAt(0) == 'u') {
+        percent = unallocatedBudget / totalUnallocatedBudget;
+        height = c.height / totalUnallocatedBudget;
     }
+
+    ctx.fillStyle = lightOrange;
+    //x,y,width, height
+    ctx.fillRect(50, (1 - percent) * c.height, 50, percent * c.height);
+    /*
+        for (var i = 0; i < numCoins; i++) {
+            $("#" + divID).html("<div class='coin'></div>" + $("#" + divID).html());
+            if ((i + 1) % 5 == 0 && i != 0) {
+                $("#" + divID).html("<br>" + $("#" + divID).html());
+            }
+        }
+        */
 }
 
 function updateCoins(divID, numCoins) {
@@ -461,18 +491,18 @@ function selectedBudget(sel, budgetType) {
 //userData["metalsBudget"] = [];
 
 function payMoney() {
-	console.log("------CAll PAY MONEY-------")
-    /*
-    var stonesBudget = $("#stonesBudgetdropDown").val();
-    var metalsBudget = $("#metalsBudgetdropDown").val();
-    userData["stonesBudget"] = [{ "budget": stonesBudget, "time": timestamp() }];
-    userData["metalsBudget"] = [{ "budget": metalsBudget, "time": timestamp() }];
-    console.log("User data: ");
-    console.log(userData);
-    */
+    console.log("------CAll PAY MONEY-------")
+        /*
+        var stonesBudget = $("#stonesBudgetdropDown").val();
+        var metalsBudget = $("#metalsBudgetdropDown").val();
+        userData["stonesBudget"] = [{ "budget": stonesBudget, "time": timestamp() }];
+        userData["metalsBudget"] = [{ "budget": metalsBudget, "time": timestamp() }];
+        console.log("User data: ");
+        console.log(userData);
+        */
     console.log("Level: " + level)
     console.log("Data rounds: " + parseInt(data["Rounds"]))
-    //console.log(data["Rounds"])
+        //console.log(data["Rounds"])
     if (level < parseInt(data["Rounds"])) {
         newLevel();
     } else {

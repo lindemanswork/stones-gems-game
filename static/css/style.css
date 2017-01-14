@@ -77,6 +77,7 @@ p {
 
 .coins{
     min-height: 52px;
+    max-width: 200px;
 }
 
 .vendors {
