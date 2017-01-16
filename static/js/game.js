@@ -75,6 +75,7 @@ function initUIVariables() {
     nums2 = shuffleArray(nums.slice());
     metalPairings = [];
     stonePairings = [];
+    $("#payMoney").attr("payMoney", false);
 }
 
 function clearScreen() {
@@ -176,24 +177,27 @@ function createObjectImage(stoneOrMetal, imageFile, color, i, divID) {
 function setObjectClickAction(divID) {
     //console.log("Set object click action div: " + divID)
     $(divID).click(function() {
-        //console.log("Click object!")
-        var pos = $(this).attr("id").slice(-1);
-        var round = data["Rounds"] - roundsLeft;
-        //console.log("ROUND: " + round)
-        if ($(this).attr("objectType") == "metal") {
-            decrementBudget("metalBudget", this);
-            updateBudgetChanges(metalBudget, rSides["metal"], round)
+        if ($("#payMoney").attr("payMoney") == "true") {
+            var pos = $(this).attr("id").slice(-1);
+            var round = data["Rounds"] - roundsLeft;
+            //console.log("ROUND: " + round)
+            if ($(this).attr("objectType") == "metal") {
+                decrementBudget("metalBudget", this);
+                updateBudgetChanges(metalBudget, rSides["metal"], round)
 
-            //console.log("UPDATE PURCHASE WITH PRICE: " + $("#metalPrice" + pos).html());
-            updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
-        } else if ($(this).attr("objectType") == "stone") {
-            decrementBudget("stoneBudget", this);
-            updateBudgetChanges(stoneBudget, rSides["stone"], round)
-            updatePurchase(pos, $("#stonePrice" + pos).html(), rSides["stone"], round)
+                //console.log("UPDATE PURCHASE WITH PRICE: " + $("#metalPrice" + pos).html());
+                updatePurchase(pos, $("#metalPrice" + pos).html(), rSides["metal"], round)
+            } else if ($(this).attr("objectType") == "stone") {
+                decrementBudget("stoneBudget", this);
+                updateBudgetChanges(stoneBudget, rSides["stone"], round)
+                updatePurchase(pos, $("#stonePrice" + pos).html(), rSides["stone"], round)
+            }
+
+            updateBudgetNumUI();
+        } else {
+            alert("Please finalize your budget first");
+            //console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
         }
-
-        updateBudgetNumUI();
-        //console.log("Budgets: stone: " + stoneBudget + ", metal: " + metalBudget)
     });
 
 }
@@ -282,7 +286,7 @@ function createBudgetArea(startCondition, unitCondition) {
         setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
     }
-    setPayMoneyAction();
+    setFinalizeBudgetAction();
 
 }
 
@@ -487,8 +491,15 @@ function selectedBudget(sel, budgetType) {
     createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
 }
 
-//userData["stonesBudget"] = [];
-//userData["metalsBudget"] = [];
+
+function finalizeBudget() {
+    console.log("FINALIZE BUDGET, DISABLE SELECT")
+
+    $('select').material_select('destroy');
+
+    $("#payMoney").text("Make purchase");
+    setPayMoneyAction();
+}
 
 function payMoney() {
     console.log("------CAll PAY MONEY-------")
@@ -502,8 +513,10 @@ function payMoney() {
         */
     console.log("Level: " + level)
     console.log("Data rounds: " + parseInt(data["Rounds"]))
-        //console.log(data["Rounds"])
+    level++;
+    roundsLeft--;
     if (level < parseInt(data["Rounds"])) {
+        alert("New level: " + level);
         newLevel();
     } else {
         logUserData(recordedData);
@@ -511,17 +524,23 @@ function payMoney() {
         console.log(recordedData);
         $("#payMoney").prop("disabled", true);
         alert("Thank you for playing");
+        return false;
 
     }
-    level++;
-    roundsLeft--;
-
 
 
 }
 
 function setPayMoneyAction() {
+    $("#payMoney").attr("payMoney", true);
     $("#payMoney").click(function() {
         payMoney();
+    })
+}
+
+function setFinalizeBudgetAction() {
+    $("#payMoney").text("Finalize my budget");
+    $("#payMoney").click(function() {
+        finalizeBudget();
     })
 }
