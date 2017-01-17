@@ -118,6 +118,7 @@ function setInitialValues() {
     totalUnallocatedBudget = stoneBudget + metalBudget;
     //console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
     unallocatedBudget = totalUnallocatedBudget; //TODO: fix this, can't be the sum depending on initial conditions
+    console.log("Current unallocatedBudget: " + unallocatedBudget)
     unitCondition = data["unitCondition"];
     initPrices();
 }
@@ -271,10 +272,12 @@ function shuffleArray(array) {
  */
 function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) { //IN PROGRESS
-        unallocatedBudget = 0;
+        //unallocatedBudget = 0;
         console.log("Add condition")
         setTransferButtons(unitCondition, "Add")
-        createBudgetInput(unitCondition, unallocatedBudget, 0, 0);
+        createBudgetInput(unitCondition, unallocatedBudget);
+        stoneBudget = 0;
+        metalBudget = 0;
     } else if (startCondition == startingpt["transfer"]) { //from side to side
         unallocatedBudget = 0;
         console.log("transfer condition");
@@ -435,18 +438,22 @@ function updateCoins(divID, numCoins) {
     createCoins(divID, numCoins);
 }
 
-function createBudgetInput(unitCondition, unallocatedBudget = 0, stoneBudget = 10, metalBudget = 10) {
+function createBudgetInput(unitCondition, unallocatedBudget, stoneBudget1 = stoneBudget, metalBudget1 = metalBudget) {
     //console.log("total budget: " + unallocatedBudget)
     if (unitCondition == units["total"]) {
-        updateBudgetNumUI(0, "", 0);
-        createDropDown("stonesBudget", "Stone Budget", stoneBudget);
-        createDropDown("metalsBudget", "Metals Budget", metalBudget);
-        //createDropDown("unallocatedBudget", "Unallocated Budget", stoneBudget + metalBudget);
+        updateBudgetNumUI(0, 0);
+        createDropDown("stonesBudget", "Stone Budget", stoneBudget1);
+        createDropDown("metalsBudget", "Metals Budget", metalBudget1);
+        //createDropDown("unallocatedBudget", "Unallocated Budget", unallocatedBudget);
+        if (data["startCondition"] == startingpt["add"] || startCondition == startingpt["cut"]) {
+            console.log("What is the unallocatedBudget? " + unallocatedBudget)
+            createCoins("unallocatedCoins", unallocatedBudget);
+        }
     } else if (unitCondition == units["marginal"]) {
         updateBudgetNumUI();
         //console.log("Marginal conditions!!!")
-        createCoins("stoneCoins", stoneBudget);
-        createCoins("metalCoins", metalBudget);
+        createCoins("stoneCoins", stoneBudget1);
+        createCoins("metalCoins", metalBudget1);
         createCoins("unallocatedCoins", unallocatedBudget);
     }
 
@@ -480,15 +487,34 @@ function selectedBudget(sel, budgetType) {
     totalConditionBudgetobjectTo = budgetType;
     //console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
 
-    //update budget variables
-    var budgetName = budgetType.substring(0, 5) + "Budget";
-    //console.log("BUDGETNAME: " + budgetName)
-    window[budgetName] = totalConditionValue;
-    //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
-    updateBudgetNumUI();
-    //console.log("CREATE COINS in div: " + budgetName + "Coins")
+    //updated unallocated coins
 
-    createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+    var type = budgetType.substring(0, 5);
+    var othertype;
+    if (type == "stone") {
+        othertype = "metal";
+    } else if (type == "metal") {
+        othertype = "stone"
+    }
+    var typeVal = $("#" + type + "sBudgetNum").text();
+    var otherTypeVal = $("#" + othertype + "sBudgetNum").text();
+    var tempUnallocBudget = totalUnallocatedBudget - parseInt(otherTypeVal) - totalConditionValue;
+    if (tempUnallocBudget >= 0) {
+        unallocatedBudget = tempUnallocBudget;
+
+        //update budget variables
+        var budgetName = type + "Budget";
+        //console.log("BUDGETNAME: " + budgetName)
+        window[budgetName] = totalConditionValue;
+        //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
+        updateBudgetNumUI();
+        //console.log("CREATE COINS in div: " + budgetName + "Coins")
+
+        createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+        createCoins("unallocatedCoins", unallocatedBudget);
+    } else {
+        alert("Sorry, you have no more money to allocate to " + budgetType);
+    }
 }
 
 
