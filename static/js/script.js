@@ -118,7 +118,9 @@ function initGame(gameVersion) {
     logInitialData();
     getSettings(gameVersion, function() {
         console.log(data);
+        randomizeConditions();
         generateMetalsStones("metalsVendor", "stonesVendor", parseInt(data["Metals"]));
+        console.log("actual conditions? : "+data["startCondition"]+","+ data["unitCondition"]);
         createBudgetArea(data["startCondition"], data["unitCondition"]);
     });
 

@@ -6,6 +6,8 @@ var startingpt = { "add": "1", "transfer": "2", "cut": "3" };
 //total: directly input in textbox
 //marginal: one by one with the arrows
 var units = { "total": "1", "marginal": "2" }
+var startConditions = ["add", "transfer", "cut"];
+var unitConditions = ["total", "marginal"];
 
 var metalCombinations = generateCombinations();
 var stoneCombinations = generateCombinations();
@@ -32,6 +34,16 @@ var nums = generateArrayOfNums(25);
 var nums1 = shuffleArray(nums.slice());
 var nums2 = shuffleArray(nums.slice());
 
+//randomize starting conditions
+var condNums = [
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [2, 1],
+    [2, 2],
+    [2, 3]
+];
+var condNums1 = shuffleArray(condNums);
 
 //Game variables
 var budgetToAllocate = 20;
@@ -61,6 +73,7 @@ var metalPurchases = [];
 /*-----new level---------*/
 function newLevel() {
     //roundsLeft--;
+    randomizeConditions();
     console.log("Rounds left after new level: " + roundsLeft)
     console.log("NEW LEVEL!")
     clearScreen();
@@ -89,6 +102,17 @@ function clearScreen() {
     $(".budgetDropdown").remove();
 }
 
+function randomizeConditions() {
+    var conds = condNums1.pop();
+    console.log("conds: "+conds)
+    data["startCondition"] = conds[1];
+    data["unitCondition"] = conds[0];
+
+    console.log("NEW RANDOMIZED CONDITIONS: ");
+    console.log(data["startCondition"]);
+    console.log(data["unitCondition"]);
+}
+
 /*----------randomize UI-----------*/
 
 function generateArrayOfNums(num) {
@@ -113,7 +137,6 @@ function setInitialValues() {
     if (roundsLeft == null) {
         roundsLeft = parseInt(data["Rounds"]);
     }
-    //console.log("Rounds left: " + roundsLeft)
     stoneBudget = parseInt(data["stonesBudget"])
     metalBudget = parseInt(data["metalsBudget"])
     totalUnallocatedBudget = stoneBudget + metalBudget;

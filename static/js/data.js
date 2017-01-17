@@ -1,7 +1,7 @@
 var recordedData = {};
 
 var sides = { "left": "stone", "right": "metal" }
-var rSides = {"stone":"left","metal":"right"}
+var rSides = { "stone": "left", "metal": "right" }
 
 recordedData["rounds"] = [];
 
@@ -15,7 +15,14 @@ function logInitialData() {
 }
 
 function setGameBoardSettings() {
-    var static = { "left": staticSettings("left", "stone"), "right": staticSettings("right", "metal") }
+    var static = {
+        "startingConditions": {
+            "starting": startConditions[parseInt(data["startCondition"]) - 1],
+            "unit": unitConditions[parseInt(data["unitCondition"]) - 1]
+        },
+        "left": staticSettings("left", "stone"),
+        "right": staticSettings("right", "metal")
+    }
     recordedData["rounds"].push(static)
     console.log(recordedData)
 }
@@ -58,10 +65,10 @@ function initPurchaseData() {
 
 
 function updateBudgetChanges(newBudgetValue, side, round = 0) {
-	console.log("Record budget data: "+newBudgetValue+" in "+recordedData["rounds"][round][side]["budget"]["changes"]);
-	console.log('recordedData["rounds"][round][side]["budget"]["changes"]:');
-	console.log(recordedData["rounds"][round][side]["budget"]["changes"]);
-	console.log(typeof(recordedData["rounds"][round][side]["budget"]["changes"]));
+    console.log("Record budget data: " + newBudgetValue + " in " + recordedData["rounds"][round][side]["budget"]["changes"]);
+    console.log('recordedData["rounds"][round][side]["budget"]["changes"]:');
+    console.log(recordedData["rounds"][round][side]["budget"]["changes"]);
+    console.log(typeof(recordedData["rounds"][round][side]["budget"]["changes"]));
     recordedData["rounds"][round][side]["budget"]["changes"].push(newBudgetValue);
     recordedData["rounds"][round][side]["budget"]["time"].push(timestamp());
 
@@ -71,6 +78,6 @@ function updateBudgetChanges(newBudgetValue, side, round = 0) {
 
 function updatePurchase(purchasePosition, purchasePrice, side, round = 0) {
     recordedData["rounds"][round][side]["purchases"]["click_positions"].push(purchasePosition);
-    recordedData["rounds"][round][side]["purchases"]["purchased_prices"].push($.trim(purchasePrice).replace("$",""));
+    recordedData["rounds"][round][side]["purchases"]["purchased_prices"].push($.trim(purchasePrice).replace("$", ""));
     recordedData["rounds"][round][side]["purchases"]["time"].push(timestamp());
 }
