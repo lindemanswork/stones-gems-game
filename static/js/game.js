@@ -16,6 +16,7 @@ console.log(stoneCombinations)
 var lightOrange = "#ffc571";
 var orange = "#f99755";
 var purple = "#858ce9";
+var red = "#ff0000";
 
 var maxStoneBudget = 10;
 var maxMetalBudget = 10;
@@ -284,7 +285,9 @@ function createBudgetArea(startCondition, unitCondition) {
         setTransferButtons(unitCondition);
         createBudgetInput(unitCondition, 0, data["stonesBudget"], data["metalsBudget"]);
     } else if (startCondition == startingpt["cut"]) {
-        //TODO
+        stoneBudget = totalUnallocatedBudget;
+        metalBudget = totalUnallocatedBudget;
+        unallocatedBudget = -1 * totalUnallocatedBudget;
         console.log("Cut condition");
         setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, 0, maxStoneBudget, maxMetalBudget);
@@ -307,6 +310,9 @@ function setTransferButtonUI(unitCondition) {
             //$(this).css("display", "none");
             $(".transfer").css("display", "none");
         }
+    });
+    $(".transferButton").each(function() {
+        $(this).attr("disabled", false);
     })
 }
 
@@ -416,11 +422,14 @@ function createCoins(divID, numCoins) {
         percent = metalBudget / totalMetalBudget;
         height = c.height / totalMetalBudget;
     } else if (divID.charAt(0) == 'u') {
-        percent = unallocatedBudget / totalUnallocatedBudget;
+        percent = Math.abs(unallocatedBudget) / totalUnallocatedBudget;
         height = c.height / totalUnallocatedBudget;
     }
-
-    ctx.fillStyle = lightOrange;
+    if (unallocatedBudget < 0 && divID.charAt(0) == 'u') {
+        ctx.fillStyle = red;
+    } else {
+        ctx.fillStyle = lightOrange;
+    }
     //x,y,width, height
     ctx.fillRect(50, (1 - percent) * c.height, 50, percent * c.height);
     /*
@@ -527,12 +536,21 @@ function updateBudgetBySelectionValue(budgetName) {
 
 
 function finalizeBudget() {
-    console.log("FINALIZE BUDGET, DISABLE SELECT")
+    console.log("FINALIZE BUDGET, DISABLE SELECT and transferbuttons")
 
     $('select').material_select('destroy');
 
+    $(".transferButton").each(function() {
+        $(this).attr("disabled", true);
+    })
+
     $("#payMoney").text("Make purchase");
     setPayMoneyAction();
+}
+
+function updateInstructions(instructions) {
+    $("#instructions").empty();
+    $("#instructions").html(instructions);
 }
 
 function payMoney() {
@@ -547,18 +565,21 @@ function payMoney() {
         */
     console.log("Level: " + level)
     console.log("Data rounds: " + parseInt(data["Rounds"]))
-    level++;
-    roundsLeft--;
-    if (level < parseInt(data["Rounds"])) {
-        alert("New level: " + level);
+
+    if (level <= parseInt(data["Rounds"])) {
+        console.log("--------New level: " + level + "----------");
+        updateInstructions("New level " + level);
         newLevel();
+        level++;
+        roundsLeft--;
         return false;
     } else {
         logUserData(recordedData);
         console.log("FINAL RECORDED DATA: ")
         console.log(recordedData);
         $("#payMoney").prop("disabled", true);
-        alert("Thank you for playing");
+        updateInstructions("Game over. Thanks for playing.")
+            //alert("Thank you for playing");
         return false;
 
     }
