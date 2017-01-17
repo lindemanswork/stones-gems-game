@@ -442,10 +442,10 @@ function createBudgetInput(unitCondition, unallocatedBudget, stoneBudget1 = ston
     //console.log("total budget: " + unallocatedBudget)
     if (unitCondition == units["total"]) {
         updateBudgetNumUI(0, 0);
-        createDropDown("stonesBudget", "Stone Budget", stoneBudget1);
-        createDropDown("metalsBudget", "Metals Budget", metalBudget1);
+        createDropDown("stonesBudget", "Stone Budget", unallocatedBudget);
+        createDropDown("metalsBudget", "Metals Budget", unallocatedBudget);
         //createDropDown("unallocatedBudget", "Unallocated Budget", unallocatedBudget);
-        if (data["startCondition"] == startingpt["add"] || startCondition == startingpt["cut"]) {
+        if (data["startCondition"] == startingpt["add"] || data["startCondition"] == startingpt["cut"]) {
             console.log("What is the unallocatedBudget? " + unallocatedBudget)
             createCoins("unallocatedCoins", unallocatedBudget);
         }
@@ -488,7 +488,7 @@ function selectedBudget(sel, budgetType) {
     //console.log("selectedBudget: " + totalConditionBudgetobjectTo + ", " + value)
 
     //updated unallocated coins
-
+    //if (startCondition!=startingpt["transfer"]){
     var type = budgetType.substring(0, 5);
     var othertype;
     if (type == "stone") {
@@ -496,25 +496,33 @@ function selectedBudget(sel, budgetType) {
     } else if (type == "metal") {
         othertype = "stone"
     }
+    //update budget variables
+    var budgetName = type + "Budget";
     var typeVal = $("#" + type + "sBudgetNum").text();
     var otherTypeVal = $("#" + othertype + "sBudgetNum").text();
-    var tempUnallocBudget = totalUnallocatedBudget - parseInt(otherTypeVal) - totalConditionValue;
-    if (tempUnallocBudget >= 0) {
-        unallocatedBudget = tempUnallocBudget;
+    if (data["startCondition"] != startingpt["transfer"]) {
+        var tempUnallocBudget = totalUnallocatedBudget - parseInt(otherTypeVal) - totalConditionValue;
+        if (tempUnallocBudget >= 0) {
+            unallocatedBudget = tempUnallocBudget;
+            updateBudgetBySelectionValue(budgetName);
+            createCoins("unallocatedCoins", unallocatedBudget);
+        }
+    } else if (data["startCondition"] == startingpt["add"] || data["startCondition"] != startingpt["cut"]) {
+        updateBudgetBySelectionValue(budgetName)
 
-        //update budget variables
-        var budgetName = type + "Budget";
-        //console.log("BUDGETNAME: " + budgetName)
-        window[budgetName] = totalConditionValue;
-        //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
-        updateBudgetNumUI();
-        //console.log("CREATE COINS in div: " + budgetName + "Coins")
-
-        createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
-        createCoins("unallocatedCoins", unallocatedBudget);
     } else {
         alert("Sorry, you have no more money to allocate to " + budgetType);
     }
+}
+
+function updateBudgetBySelectionValue(budgetName) {
+    window[budgetName] = totalConditionValue;
+    //updateCoins(budgetToAllocate+ "Coins", window[budgetName]);
+    updateBudgetNumUI();
+    //console.log("CREATE COINS in div: " + budgetName + "Coins")
+
+    createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+
 }
 
 
@@ -544,6 +552,7 @@ function payMoney() {
     if (level < parseInt(data["Rounds"])) {
         alert("New level: " + level);
         newLevel();
+        return false;
     } else {
         logUserData(recordedData);
         console.log("FINAL RECORDED DATA: ")
