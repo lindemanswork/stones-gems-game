@@ -74,7 +74,7 @@ var stonePurchases = [];
 var metalPurchases = [];
 
 
-//TODO: total & transfer don't work
+//TODO: marginal & cut don't update coins
 
 /*-----new level---------*/
 function newLevel() {
@@ -112,11 +112,11 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-    data["startCondition"] = conds[1];
-    data["unitCondition"] = conds[0];
+    //data["startCondition"] = conds[1];
+    //data["unitCondition"] = conds[0];
 
-    //data["startCondition"] = 3;
-    //data["unitCondition"] = 1;
+    data["startCondition"] = 2;
+    data["unitCondition"] = 2;
 
     //console.log("NEW RANDOMIZED CONDITIONS: ");
     //console.log(startCondition);
@@ -167,9 +167,15 @@ function setInitialValues() {
         unallocatedBudget = -1 * Math.abs(totalUnallocatedBudget);
     } else if (startCondition == startingpt["transfer"]) {
         //console.log("Setting initial values for transfer");
-        unallocatedBudget = 0;
-        metalBudget = 0;
-        stoneBudget = 0;
+        if (unitCondition == units["total"]) {
+            unallocatedBudget = 0;
+            metalBudget = 0;
+            stoneBudget = 0;
+        }else if (unitCondition==units["marginal"]){
+            metalBudget = totalUnallocatedBudget;
+            stoneBudget = totalUnallocatedBudget;
+            unallocatedBudget = 0;
+        }
     }
     /*
         totalUnallocatedBudget = stoneBudget + metalBudget;
