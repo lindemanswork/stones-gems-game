@@ -112,11 +112,11 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-    //data["startCondition"] = conds[1];
-    //data["unitCondition"] = conds[0];
+    data["startCondition"] = conds[1];
+    data["unitCondition"] = conds[0];
 
-    data["startCondition"] = 2;
-    data["unitCondition"] = 2;
+    //data["startCondition"] = 2;
+    //data["unitCondition"] = 2;
 
     //console.log("NEW RANDOMIZED CONDITIONS: ");
     //console.log(startCondition);
@@ -171,7 +171,7 @@ function setInitialValues() {
             unallocatedBudget = 0;
             metalBudget = 0;
             stoneBudget = 0;
-        }else if (unitCondition==units["marginal"]){
+        } else if (unitCondition == units["marginal"]) {
             metalBudget = totalUnallocatedBudget;
             stoneBudget = totalUnallocatedBudget;
             unallocatedBudget = 0;
