@@ -112,11 +112,11 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-        //data["startCondition"] = conds[1];
-        //data["unitCondition"] = conds[0];
+        data["startCondition"] = conds[1];
+        data["unitCondition"] = conds[0];
 
-    data["startCondition"] = 3;
-    data["unitCondition"] = 1;
+    //data["startCondition"] = 2;
+    //data["unitCondition"] = 1;
 
     //console.log("NEW RANDOMIZED CONDITIONS: ");
     //console.log(startCondition);
@@ -160,7 +160,7 @@ function setInitialValues() {
         unallocatedBudget = totalUnallocatedBudget;
     } else if (startCondition == startingpt["cut"]) {
         //console.log("Setting initial values for cut")
-        totalUnallocatedBudget = stoneBudget + metalBudget;
+        //totalUnallocatedBudget = stoneBudget + metalBudget;
         unallocatedBudget = totalUnallocatedBudget;
         metalBudget = totalUnallocatedBudget;
         stoneBudget = totalUnallocatedBudget;
@@ -168,8 +168,8 @@ function setInitialValues() {
     } else if (startCondition == startingpt["transfer"]) {
         //console.log("Setting initial values for transfer");
         unallocatedBudget = 0;
-        metalBudget = parseInt(data["metalsBudget"]);
-        stoneBudget = parseInt(data["stonesBudget"]);
+        metalBudget = 0;
+        stoneBudget = 0;
     }
     /*
         totalUnallocatedBudget = stoneBudget + metalBudget;
@@ -340,7 +340,7 @@ function createBudgetArea(startCondition, unitCondition) {
         //unallocatedBudget = 0;
         //console.log("transfer condition");
         setTransferButtons(unitCondition);
-        createBudgetInput(unitCondition, 0, stoneBudget, metalBudget);
+        createBudgetInput(unitCondition, totalUnallocatedBudget, stoneBudget, metalBudget);
     } else if (startCondition == startingpt["cut"]) {
         //stoneBudget = totalUnallocatedBudget;
         //metalBudget = totalUnallocatedBudget;
@@ -511,8 +511,8 @@ function createBudgetInput(unitCondition, unallocatedBudget, stoneBudget1 = ston
     if (unitCondition == units["total"]) {
         console.log("TOTAL")
         updateBudgetNumUI();
-        createDropDown("stonesBudget", "Stone Budget", stoneBudget);
-        createDropDown("metalsBudget", "Metals Budget", metalBudget);
+        createDropDown("stonesBudget", "Stone Budget", unallocatedBudget);
+        createDropDown("metalsBudget", "Metals Budget", unallocatedBudget);
         //createDropDown("unallocatedBudget", "Unallocated Budget", unallocatedBudget);
         if (startCondition == startingpt["add"] || startCondition == startingpt["cut"]) {
             console.log("What is the unallocatedBudget? " + unallocatedBudget)
@@ -585,13 +585,17 @@ function selectedBudget(sel, budgetType) {
     } else if (startCondition == startingpt["cut"]) {
         var tempUnallocBudget = -1 * totalUnallocatedBudget;
         tempUnallocBudget = tempUnallocBudget + (totalUnallocatedBudget - parseInt(otherTypeVal)) + (totalUnallocatedBudget - totalConditionValue)
-        //if (tempUnallocBudget >= 0) {
-            unallocatedBudget = tempUnallocBudget;
-            updateBudgetBySelectionValue(budgetName);
-            createCoins("unallocatedCoins", unallocatedBudget);
+            //if (tempUnallocBudget >= 0) {
+        unallocatedBudget = tempUnallocBudget;
+        updateBudgetBySelectionValue(budgetName);
+        createCoins("unallocatedCoins", unallocatedBudget);
         //}
     } else if (startCondition == startingpt["transfer"]) {
-        updateBudgetBySelectionValue(budgetName);
+        if ((totalConditionValue + parseInt(otherTypeVal)) > totalUnallocatedBudget) {
+            alert("Sorry, you've exceeded the allocated budget of " + totalUnallocatedBudget);
+        } else {
+            updateBudgetBySelectionValue(budgetName);
+        }
     } else {
         alert("Sorry, you have no more money to allocate to " + budgetType);
     }
