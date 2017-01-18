@@ -112,11 +112,11 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-        //data["startCondition"] = conds[1];
-        //data["unitCondition"] = conds[0];
+    data["startCondition"] = conds[1];
+    data["unitCondition"] = conds[0];
 
-    data["startCondition"] = 3;
-    data["unitCondition"] = 1;
+    //data["startCondition"] = 3;
+    //data["unitCondition"] = 1;
 
     //console.log("NEW RANDOMIZED CONDITIONS: ");
     //console.log(startCondition);
@@ -608,7 +608,7 @@ function updateBudgetBySelectionValue(budgetName) {
     updateBudgetNumUI();
     //console.log("CREATE COINS in div: " + budgetName + "Coins")
 
-    //createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+    //createCoins(budgetName.substring(0, 5) + "Coinst", window[budgetName]);
     createCoins("unallocatedCoins", unallocatedBudget);
     createCoins("stoneCoins", stoneBudget);
     createCoins("metalCoins", metalBudget);
