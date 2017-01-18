@@ -112,11 +112,11 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-        data["startCondition"] = conds[1];
-        data["unitCondition"] = conds[0];
+        //data["startCondition"] = conds[1];
+        //data["unitCondition"] = conds[0];
 
-    //data["startCondition"] = 2;
-    //data["unitCondition"] = 1;
+    data["startCondition"] = 3;
+    data["unitCondition"] = 1;
 
     //console.log("NEW RANDOMIZED CONDITIONS: ");
     //console.log(startCondition);
@@ -511,8 +511,10 @@ function createBudgetInput(unitCondition, unallocatedBudget, stoneBudget1 = ston
     if (unitCondition == units["total"]) {
         console.log("TOTAL")
         updateBudgetNumUI();
-        createDropDown("stonesBudget", "Stone Budget", unallocatedBudget);
-        createDropDown("metalsBudget", "Metals Budget", unallocatedBudget);
+        createDropDown("stonesBudget", "Stone Budget", totalUnallocatedBudget);
+        createDropDown("metalsBudget", "Metals Budget", totalUnallocatedBudget);
+        createCoins("stoneCoins", stoneBudget1);
+        createCoins("metalCoins", metalBudget1);
         //createDropDown("unallocatedBudget", "Unallocated Budget", unallocatedBudget);
         if (startCondition == startingpt["add"] || startCondition == startingpt["cut"]) {
             console.log("What is the unallocatedBudget? " + unallocatedBudget)
@@ -531,7 +533,7 @@ function createBudgetInput(unitCondition, unallocatedBudget, stoneBudget1 = ston
 
 function createDropDown(divID, name, numOptions = 10) {
     console.log("CreateDropdown divid: " + divID);
-    console.log(totalUnallocatedBudget)
+    console.log("numOPtions: " + numOptions)
     $("#" + divID).append('<div class="input-field col s4 offset-s4 budgetDropdown">' +
         '<select onchange="selectedBudget(this,\'' + divID + '\')" id = "' + divID + 'dropDown">' +
         createDropDownOptions(numOptions) +
@@ -580,7 +582,7 @@ function selectedBudget(sel, budgetType) {
         if (tempUnallocBudget >= 0) {
             unallocatedBudget = tempUnallocBudget;
             updateBudgetBySelectionValue(budgetName);
-            createCoins("unallocatedCoins", unallocatedBudget);
+
         }
     } else if (startCondition == startingpt["cut"]) {
         var tempUnallocBudget = -1 * totalUnallocatedBudget;
@@ -588,7 +590,6 @@ function selectedBudget(sel, budgetType) {
             //if (tempUnallocBudget >= 0) {
         unallocatedBudget = tempUnallocBudget;
         updateBudgetBySelectionValue(budgetName);
-        createCoins("unallocatedCoins", unallocatedBudget);
         //}
     } else if (startCondition == startingpt["transfer"]) {
         if ((totalConditionValue + parseInt(otherTypeVal)) > totalUnallocatedBudget) {
@@ -607,7 +608,10 @@ function updateBudgetBySelectionValue(budgetName) {
     updateBudgetNumUI();
     //console.log("CREATE COINS in div: " + budgetName + "Coins")
 
-    createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+    //createCoins(budgetName.substring(0, 5) + "Coins", window[budgetName]);
+    createCoins("unallocatedCoins", unallocatedBudget);
+    createCoins("stoneCoins", stoneBudget);
+    createCoins("metalCoins", metalBudget);
 
 }
 
