@@ -73,6 +73,9 @@ var totalConditionBudgetobjectTo = "";
 var stonePurchases = [];
 var metalPurchases = [];
 
+
+//TODO: marginal & add doesn't work!!! 1/17
+
 /*-----new level---------*/
 function newLevel() {
     //roundsLeft--;
@@ -107,13 +110,13 @@ function clearScreen() {
 
 function randomizeConditions() {
     var conds = condNums1.pop();
-    console.log("conds: " + conds)
+    //console.log("conds: " + conds)
     startCondition = conds[1];
     data["unitCondition"] = conds[0];
 
-    console.log("NEW RANDOMIZED CONDITIONS: ");
-    console.log(startCondition);
-    console.log(data["unitCondition"]);
+    //console.log("NEW RANDOMIZED CONDITIONS: ");
+    //console.log(startCondition);
+    //console.log(data["unitCondition"]);
 }
 
 /*----------randomize UI-----------*/
@@ -129,7 +132,7 @@ function generateArrayOfNums(num) {
 //will there always be an equal amount of stones and metals?
 function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     setInitialValues();
-    console.log("number of stones: " + numStones + ", metals: " + numMetals)
+    //console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
     //generateObjects(stoneDivID, numStones /*stone image path*/ );
     setGameBoardSettings()
@@ -151,14 +154,14 @@ function setInitialValues() {
         stoneBudget = 0;
         unallocatedBudget = totalUnallocatedBudget;
     } else if (startCondition == startingpt["cut"]) {
-        console.log("Setting initial values for cut")
+        //console.log("Setting initial values for cut")
         totalUnallocatedBudget = stoneBudget + metalBudget;
         unallocatedBudget = totalUnallocatedBudget;
         metalBudget = totalUnallocatedBudget;
         stoneBudget = totalUnallocatedBudget;
         unallocatedBudget = -1 * Math.abs(totalUnallocatedBudget);
     } else if (startCondition == startingpt["transfer"]) {
-        console.log("Setting initial values for transfer");
+        //console.log("Setting initial values for transfer");
         unallocatedBudget = 0;
         metalBudget = parseInt(data["metalsBudget"]);
         stoneBudget = parseInt(data["stonesBudget"]);
@@ -323,21 +326,21 @@ function shuffleArray(array) {
 function createBudgetArea(startCondition, unitCondition) {
     if (startCondition == startingpt["add"]) { //IN PROGRESS
         //unallocatedBudget = 0;
-        console.log("Add condition")
+        //console.log("Add condition")
         setTransferButtons(unitCondition, "Add")
         createBudgetInput(unitCondition, unallocatedBudget);
         //stoneBudget = 0;
         //metalBudget = 0;
     } else if (startCondition == startingpt["transfer"]) { //from side to side
         //unallocatedBudget = 0;
-        console.log("transfer condition");
+        //console.log("transfer condition");
         setTransferButtons(unitCondition);
         createBudgetInput(unitCondition, 0, stoneBudget, metalBudget);
     } else if (startCondition == startingpt["cut"]) {
         //stoneBudget = totalUnallocatedBudget;
         //metalBudget = totalUnallocatedBudget;
         //unallocatedBudget = -1 * totalUnallocatedBudget;
-        console.log("Cut condition");
+        //console.log("Cut condition");
         setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, 0, stoneBudget, metalBudget);
     }
@@ -349,6 +352,7 @@ function setTransferButtonUI(unitCondition) {
     var i = 1;
     $(".transferButton").each(function() {
         if (unitCondition == units["marginal"]) {
+            $(".transfer").css("display", "block");
             if (i == 2 || i == 3) {
                 $(this).attr("src", "/static/images/RightArrow.png");
             } else {
@@ -391,7 +395,7 @@ function setTransferButtons(unitCondition, add = "") {
 
 //for add condition
 function allocateBudget(budgetToDiv, budgetFromDiv, add) {
-    console.log("allocate budget clicked!")
+    //console.log("allocate budget clicked!")
     var objectFrom = $(budgetFromDiv).attr("objectType");
     var objectTo = $(budgetToDiv).attr("objectType");
     var updateCondition = true;
@@ -437,11 +441,11 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
             window[objectFrom + "Budget"]--;
             window[objectTo + "Budget"]++;
             updateCoins(objectTo + "Coins", window[objectTo + "Budget"]);
-            console.log('objectTo "Budget": ' + objectTo + "Budget")
+            //console.log('objectTo "Budget": ' + objectTo + "Budget")
             updateCoins(objectFrom + "Coins", window[objectFrom + "Budget"]);
-            console.log("unallocated budget: " + unallocatedBudget)
+            //console.log("unallocated budget: " + unallocatedBudget)
         } else if (unitCondition == units["total"]) {
-            console.log('objectTo "Budget": ' + objectTo + "Budget");
+            //console.log('objectTo "Budget": ' + objectTo + "Budget");
             window[fromBudgetString] = window[fromBudgetString] - totalConditionValue;
             window[objectTo /*+ add*/ + "Budget"] = window[objectTo /*+ add*/ + "Budget"] + totalConditionValue;
         }
@@ -455,7 +459,7 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
 }
 
 function createCoins(divID, numCoins) {
-    console.log("createCoins divID: " + divID)
+    //console.log("createCoins divID: " + divID)
     var totalStoneBudget = data["stonesBudget"];
     var totalMetalBudget = data["metalsBudget"];
     var percent;
@@ -615,7 +619,7 @@ function payMoney() {
     console.log("Level: " + level)
     console.log("Data rounds: " + parseInt(data["Rounds"]))
 
-    if (level <= parseInt(data["Rounds"])) {
+    if (level < parseInt(data["Rounds"])) {
         console.log("--------New level: " + level + "----------");
         updateInstructions("New level " + level);
         newLevel();
@@ -638,14 +642,22 @@ function payMoney() {
 
 function setPayMoneyAction() {
     $("#payMoney").attr("payMoney", true);
+    $("#payMoney").attr("onclick", "payMoney()");
+    /*
     $("#payMoney").click(function() {
+        console.log("pay money on click")
         payMoney();
     })
+    */
 }
 
 function setFinalizeBudgetAction() {
+    $("#payMoney").attr("onclick","finalizeBudget()");
     $("#payMoney").text("Finalize my budget");
+    /*
     $("#payMoney").click(function() {
+        console.log("finalize budget on click")
         finalizeBudget();
     })
+    */
 }

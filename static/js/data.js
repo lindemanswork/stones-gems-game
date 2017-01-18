@@ -24,7 +24,7 @@ function setGameBoardSettings() {
         "right": staticSettings("right", "metal")
     }
     recordedData["rounds"].push(static)
-    console.log(recordedData)
+    //console.log(recordedData)
 }
 
 function metalStaticSettings(side) {
@@ -46,7 +46,7 @@ function staticSettings(side, objectType) {
 
 function initBudgetData(side) {
     var budget = {}
-    console.log("initBudgetData: " + sides[side] + "Budget: " + window[sides[side] + "Budget"])
+    //console.log("initBudgetData: " + sides[side] + "Budget: " + window[sides[side] + "Budget"])
     budget["start"] = window[sides[side] + "Budget"];
     budget["changes"] = [];
     budget["time"] = [];
@@ -65,15 +65,16 @@ function initPurchaseData() {
 
 
 function updateBudgetChanges(newBudgetValue, side, round = 0) {
-    console.log("Record budget data: " + newBudgetValue + " in " + recordedData["rounds"][round][side]["budget"]["changes"]);
+    
+    /*console.log("Record budget data: " + newBudgetValue + " in " + recordedData["rounds"][round][side]["budget"]["changes"]);
     console.log('recordedData["rounds"][round][side]["budget"]["changes"]:');
     console.log(recordedData["rounds"][round][side]["budget"]["changes"]);
-    console.log(typeof(recordedData["rounds"][round][side]["budget"]["changes"]));
+    console.log(typeof(recordedData["rounds"][round][side]["budget"]["changes"]));*/
     recordedData["rounds"][round][side]["budget"]["changes"].push(newBudgetValue);
     recordedData["rounds"][round][side]["budget"]["time"].push(timestamp());
 
-    console.log("Current recordedData: ")
-    console.log(recordedData)
+    //console.log("Current recordedData: ")
+    //console.log(recordedData)
 }
 
 function updatePurchase(purchasePosition, purchasePrice, side, round = 0) {
