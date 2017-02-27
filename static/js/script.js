@@ -142,7 +142,7 @@ function timestamp() {
     var year = d.getFullYear();
     var seconds = d.getSeconds();
 
-    var timestamp = day + " " + hr + ":" + min + ":" + seconds + ampm + " " + date + " " + month + " " + year;
+    var timestamp = hr + ":" + min + ":" + seconds +" "+ ampm + " " + date + "-" + month + "-" + year;
 
     return timestamp;
 }

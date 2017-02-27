@@ -112,8 +112,8 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-    data["startCondition"] = 2//conds[1];
-    data["unitCondition"] = 1//conds[0];
+    data["startCondition"] = conds[1];
+    data["unitCondition"] = conds[0];
 }
 
 /*----------randomize UI-----------*/
