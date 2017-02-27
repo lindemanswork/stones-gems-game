@@ -112,15 +112,8 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-    data["startCondition"] = 1//conds[1];
-    data["unitCondition"] = 2//conds[0];
-
-    //data["startCondition"] = 2;
-    //data["unitCondition"] = 2;
-
-    //console.log("NEW RANDOMIZED CONDITIONS: ");
-    //console.log(startCondition);
-    //console.log(data["unitCondition"]);
+    data["startCondition"] = 2//conds[1];
+    data["unitCondition"] = 1//conds[0];
 }
 
 /*----------randomize UI-----------*/
@@ -136,9 +129,7 @@ function generateArrayOfNums(num) {
 //will there always be an equal amount of stones and metals?
 function generateMetalsStones(metalDivID, stoneDivID, numMetals, numStones) {
     setInitialValues();
-    //console.log("number of stones: " + numStones + ", metals: " + numMetals)
     generateObjects(metalDivID, stoneDivID, numMetals);
-    //generateObjects(stoneDivID, numStones /*stone image path*/ );
     setGameBoardSettings()
 
 }
@@ -159,15 +150,14 @@ function setInitialValues() {
         stoneBudget = 0;
         unallocatedBudget = totalUnallocatedBudget;
     } else if (startCondition == startingpt["cut"]) {
-        //console.log("Setting initial values for cut")
-        //totalUnallocatedBudget = stoneBudget + metalBudget;
         unallocatedBudget = totalUnallocatedBudget;
         metalBudget = totalUnallocatedBudget;
         stoneBudget = totalUnallocatedBudget;
         unallocatedBudget = -1 * Math.abs(totalUnallocatedBudget);
     } else if (startCondition == startingpt["transfer"]) {
-        //console.log("Setting initial values for transfer");
+        //remove unallocated budget section
         if (unitCondition == units["total"]) {
+            $("#unallocatedBudget").hide();
             unallocatedBudget = 0;
             metalBudget = 0;
             stoneBudget = 0;
@@ -177,13 +167,6 @@ function setInitialValues() {
             unallocatedBudget = 0;
         }
     }
-    /*
-        totalUnallocatedBudget = stoneBudget + metalBudget;
-        //console.log("BUdget: stone:" + stoneBudget + ", " + metalBudget)
-        unallocatedBudget = totalUnallocatedBudget; //TODO: fix this, can't be the sum depending on initial conditions
-        console.log("Current unallocatedBudget: " + unallocatedBudget)
-        */
-
     initPrices();
 }
 
