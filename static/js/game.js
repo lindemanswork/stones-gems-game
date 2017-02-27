@@ -112,8 +112,8 @@ function randomizeConditions() {
     var conds = condNums1.pop();
     console.log("conds: " + conds)
         //UNCOMMENT THESE LATER
-    data["startCondition"] = conds[1];
-    data["unitCondition"] = conds[0];
+    data["startCondition"] = 1//conds[1];
+    data["unitCondition"] = 2//conds[0];
 
     //data["startCondition"] = 2;
     //data["unitCondition"] = 2;
@@ -206,8 +206,6 @@ function generateObjects(metalDivID, stoneDivID, numObject) {
         //add to pairings
         metalPairings.push(metalIndices);
         stonePairings.push(stoneIndices);
-
-        //console.log("Indices: metal:" + metalIndices + ", stone: " + stoneIndices);
 
         var stone = stoneImages[stoneIndices[0]];
         var metal = metalImages[metalIndices[0]];
@@ -343,15 +341,9 @@ function createBudgetArea(startCondition, unitCondition) {
         //stoneBudget = 0;
         //metalBudget = 0;
     } else if (startCondition == startingpt["transfer"]) { //from side to side
-        //unallocatedBudget = 0;
-        //console.log("transfer condition");
         setTransferButtons(unitCondition);
         createBudgetInput(unitCondition, totalUnallocatedBudget, stoneBudget, metalBudget);
     } else if (startCondition == startingpt["cut"]) {
-        //stoneBudget = totalUnallocatedBudget;
-        //metalBudget = totalUnallocatedBudget;
-        //unallocatedBudget = -1 * totalUnallocatedBudget;
-        //console.log("Cut condition");
         setTransferButtons(unitCondition)
         createBudgetInput(unitCondition, unallocatedBudget, stoneBudget, metalBudget);
     }
@@ -413,41 +405,18 @@ function allocateBudget(budgetToDiv, budgetFromDiv, add) {
     var updateCondition = true;
     var updateCondition2 = false;
     var fromBudgetString;
-    /*if (unitCondition == units["total"]) {
-        if (totalConditionBudgetobjectTo == "unallocatedBudget") {
-            fromBudgetString = totalConditionBudgetobjectTo.substring(0, 11) + "Budget";
-        } else {
-            fromBudgetString = totalConditionBudgetobjectTo.substring(0, 5) + "Budget";
-        }
-    }else{*/
+
     fromBudgetString = objectFrom + "Budget";
-    // }
-    //console.log("fromBudgetString: " + fromBudgetString)
+
 
     if (add == "add") {
-        //console.log("MARGINAL CONDITION add")
-        updateCondition = (window[objectFrom + "Budget"] > 0 && window[objectTo + add + "Budget"] < window[objectTo + "Budget"])
+        updateCondition = (/*window[objectFrom + "Budget"] > 0 &&*/ window[objectTo + add + "Budget"] < window[objectTo + "Budget"])
         updateCondition2 = (window[objectTo + "Budget"] >= window[objectTo + "Budget"]);
     } else {
-
-        //console.log("MARGINAL CONDITION not add")
-        updateCondition = (window[fromBudgetString] > 0)
-            //console.log("window[" + fromBudgetString + "]: " + window[fromBudgetString]);
+        updateCondition = true;//(window[fromBudgetString] > 0)
         updateCondition2 = (window[objectTo + "Budget"] > window[objectTo + "Budget"]);
     }
 
-    /*
-        if (unitCondition == units["total"]) {
-            console.log("TOTAL CONDITION")
-            if (objectFrom == "unallocated") {
-                budgetString = "Budget";
-            } else {
-                budgetString = "sBudget"
-            }
-            updateCondition = ((totalConditionBudgetobjectTo == (objectFrom + budgetString)) && (window[fromBudgetString] >= totalConditionValue))
-            console.log("Total updateCondition: " + updateCondition)
-        }
-    */
     if (updateCondition) {
         if (unitCondition == units["marginal"]) {
             window[objectFrom + "Budget"]--;
@@ -546,11 +515,7 @@ function createDropDown(divID, name, numOptions = 10) {
         '</select>' +
         '<label></label>' +
         '</div>');
-    /*if (startCondition == startingpt["cut"]) {
-        //preselect
-        console.log("Preselect budget option for "+"#" + divID + "dropDown option, budg: "+totalUnallocatedBudget)
-        $("#" + divID + "dropDown option").eq(totalUnallocatedBudget).prop("selected", true);
-    }*/
+
     $('select').material_select();
 }
 
@@ -623,16 +588,20 @@ function updateBudgetBySelectionValue(budgetName) {
 
 
 function finalizeBudget() {
-    console.log("FINALIZE BUDGET, DISABLE SELECT and transferbuttons")
+    if (unallocatedBudget >= 0 && stoneBudget>=0 && metalBudget>=0) {
+        console.log("FINALIZE BUDGET, DISABLE SELECT and transferbuttons")
 
-    $('select').material_select('destroy');
+        $('select').material_select('destroy');
 
-    $(".transferButton").each(function() {
-        $(this).attr("disabled", true);
-    })
+        $(".transferButton").each(function() {
+            $(this).attr("disabled", true);
+        })
 
-    $("#payMoney").text("Make purchase");
-    setPayMoneyAction();
+        $("#payMoney").text("Make purchase");
+        setPayMoneyAction();
+    }else{
+        alert("A budget is below 0. Please update your budget so that it is 0 or a positive value.")
+    }
 }
 
 function updateInstructions(instructions) {
